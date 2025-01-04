@@ -45,7 +45,6 @@ export default function EmployerJobsTable() {
         <TableHeader>
           <TableRow>
             <TableHead className="w-16 sm:w-auto">Logo</TableHead>{" "}
-            {/* Giữ nguyên kích thước logo */}
             <TableHead>Tên Công ty</TableHead>
             <TableHead>Vai trò</TableHead>
             <TableHead className="hidden md:table-cell">Ngày đăng</TableHead>
@@ -56,11 +55,7 @@ export default function EmployerJobsTable() {
           {filterJobs?.map((job) => (
             <TableRow key={job._id}>
               <TableCell className="w-16 sm:w-auto">
-                {" "}
-                {/* Giữ nguyên kích thước logo */}
                 <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                  {" "}
-                  {/* Điều chỉnh kích thước avatar */}
                   <AvatarImage src={job?.company?.logo} />
                 </Avatar>
               </TableCell>

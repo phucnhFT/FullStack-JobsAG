@@ -8,7 +8,6 @@ import axios from "axios";
 import { APPLICANTS_API, JOB_API } from "@/utils/constant";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@headlessui/react";
 import Navbar from "@/components/shared/Navbar";
 
 export default function JobDescription() {
@@ -53,10 +52,10 @@ export default function JobDescription() {
         });
         if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
-          // Kiểm tra xem công việc đã hết hạn hay chưa
+          // check công việc đã hết hạn
           const currentDate = new Date();
           const expiryDate = new Date(res.data.job.expiryDate);
-          setIsExpired(expiryDate < currentDate); // Cập nhật trạng thái hết hạn
+          setIsExpired(expiryDate < currentDate); // update trạng thái hết hạn
         } else {
           toast.error("Lỗi khi lấy thông tin công việc");
         }
