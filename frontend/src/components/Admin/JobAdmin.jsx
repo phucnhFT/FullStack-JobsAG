@@ -14,6 +14,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export default function AdminJobs() {
   const [jobs, setJobs] = useState([]);
@@ -122,15 +123,22 @@ export default function AdminJobs() {
   return (
     <div className="container mx-auto p-4 md:p-6">
       <Navbar />
-      <h1 className="text-xl md:text-2xl font-bold mb-4 mt-6 md:mt-10">Danh sách Công việc</h1>
+      <h1 className="text-xl md:text-2xl font-bold mb-4 mt-6 md:mt-10">
+        Danh sách Công việc
+      </h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+                Logo Công ty
+              </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Tiêu đề</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Mô tả</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Lương</th>
-              <th className="py-3 px-4 md:py-3 md:px-6 text-left">Trạng thái</th>
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+                Trạng thái
+              </th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-medium">
@@ -142,6 +150,11 @@ export default function AdminJobs() {
                 transition={{ duration: 0.5 }}
                 className="border-b border-gray-200 hover:bg-gray-100"
               >
+                <td className="py-3 px-4 md:py-3 md:px-6">
+                  <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
+                    <AvatarImage src={job?.company?.logo} />
+                  </Avatar>
+                </td>
                 <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
                 <td className="py-3 px-4 md:py-3 md:px-6">{job.description}</td>
                 <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
@@ -203,7 +216,7 @@ export default function AdminJobs() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Nhập Lý Do Từ Chối</DialogTitle>
-          </DialogHeader> 
+          </DialogHeader>
           <textarea
             className="w-full p-2 border border-gray-300 rounded"
             rows="4"

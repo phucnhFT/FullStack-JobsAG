@@ -30,6 +30,10 @@ export default function AdminUsers() {
   };
 
   const handleDeleteUser = async (userId) => {
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa người dùng này không?"
+    );
+    if (!confirmDelete) return;
     try {
       const res = await axios.delete(`${USER_API}/delete-user/${userId}`, {
         withCredentials: true,

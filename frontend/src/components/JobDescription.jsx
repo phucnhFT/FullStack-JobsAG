@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/redux/JobSlice.js";
@@ -9,6 +8,7 @@ import { APPLICANTS_API, JOB_API } from "@/utils/constant";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/shared/Navbar";
+import { Button } from "@/components/ui/button";
 
 export default function JobDescription() {
   const { singleJob } = useSelector(store=> store.job);
