@@ -47,14 +47,6 @@ export const postJob = async (req, res) => {
       });
     }
 
-    // Kiểm tra xem category có phải là ObjectId hợp lệ không
-    if (!mongoose.Types.ObjectId.isValid(category)) {
-      return res.status(400).json({
-        success: false,
-        message: "Danh mục không hợp lệ!",
-      });
-    }
-
     // Kiểm tra hoặc tạo category
     let categoryDoc = await Category.findOne({ name: category });
     if (!categoryDoc) {

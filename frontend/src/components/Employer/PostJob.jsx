@@ -1,12 +1,23 @@
 import Navbar from "@/components/shared/Navbar";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { JOB_API } from "@/utils/constant";
 import { Label } from "@radix-ui/react-label";
+import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import axios from "axios";
 
-const company = [];
 export default function PostJob() {
   const [input, setInput] = useState({
     title: "",
@@ -16,7 +27,7 @@ export default function PostJob() {
     location: "",
     jobType: "",
     category: "",
-    experienceLevel: "",
+    experience: "",
     position: 0,
     companyId: "",
     postDate: "",
@@ -31,17 +42,47 @@ export default function PostJob() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-   const selectChangeHandler = (value) => {
-     const selectedCompany = companies.find(
-       (company) => company.name.toLowerCase() === value
-     );
-     setInput({ ...input, companyId: selectedCompany._id });
-   };
+  const selectChangeHandler = (value) => {
+    const selectedCompany = companies.find(
+      (company) => company.name.toLowerCase() === value
+    );
+    if (selectedCompany) {
+      setInput({ ...input, companyId: selectedCompany._id });
+    } else {
+      toast.error("Không tìm thấy công ty được chọn.");
+    }
+  };
+
+  const submitHanlder = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await axios.post(`${JOB_API}/post`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/employer/jobs");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center w-screen my-5">
-        <form className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md">
+        <form
+          onSubmit={submitHanlder}
+          className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md"
+        >
           <div className="grid grid-cols-2 gap-2">
             <div>
               <Label>Tên công việc</Label>
@@ -117,8 +158,8 @@ export default function PostJob() {
               <Label>Kinh nghiệm</Label>
               <Input
                 type="text"
-                name="experienceLevel"
-                value={input.experienceLevel}
+                name="experience"
+                value={input.experience}
                 onChange={changeEventHandler}
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
@@ -130,7 +171,7 @@ export default function PostJob() {
                 name="position"
                 value={input.position}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-60 my-1"
               />
             </div>
             <div>
@@ -153,7 +194,7 @@ export default function PostJob() {
                 className="focus-visible:ring-offset-0 focus-visible:ring-0"
               />
             </div>
-            {companies.length > 0 && (
+            {companies && companies.length > 0 && (
               <div className="flex-1">
                 <Label>Chọn công ty</Label>
                 <Select onValueChange={selectChangeHandler}>
@@ -176,6 +217,20 @@ export default function PostJob() {
               </div>
             )}
           </div>
+          {loading ? (
+            <Button className="w-full my-4">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Vui lòng chờ
+            </Button>
+          ) : (
+            <Button type="submit" className="w-full my-4">
+              Đăng tuyển công việc
+            </Button>
+          )}
+          {companies && companies.length === 0 && (
+            <p className="text-xs text-red-600 font-bold text-center my-3">
+              *Vui lòng đăng ký công ty trước khi đăng tuyển dụng
+            </p>
+          )}
         </form>
       </div>
     </div>
