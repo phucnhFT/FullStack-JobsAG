@@ -68,7 +68,7 @@ export default function PostJob() {
         navigate("/employer/jobs");
       }
     } catch (error) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
       console.log(error);
     } finally {
       setLoading(false);
@@ -78,12 +78,12 @@ export default function PostJob() {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center w-screen my-5">
+      <div className="flex items-center justify-center w-screen my-5 px-4">
         <form
           onSubmit={submitHanlder}
-          className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md"
+          className="p-8 w-full max-w-4xl border border-gray-200 shadow-lg rounded-md"
         >
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Tên công việc</Label>
               <Input
@@ -91,7 +91,7 @@ export default function PostJob() {
                 name="title"
                 value={input.title}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -101,7 +101,7 @@ export default function PostJob() {
                 name="description"
                 value={input.description}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -111,7 +111,7 @@ export default function PostJob() {
                 name="requirements"
                 value={input.requirements}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -121,7 +121,7 @@ export default function PostJob() {
                 name="salary"
                 value={input.salary}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function PostJob() {
                 name="location"
                 value={input.location}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -141,7 +141,7 @@ export default function PostJob() {
                 name="jobType"
                 value={input.jobType}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -151,7 +151,7 @@ export default function PostJob() {
                 name="category"
                 value={input.category}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -161,7 +161,7 @@ export default function PostJob() {
                 name="experience"
                 value={input.experience}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
@@ -171,7 +171,7 @@ export default function PostJob() {
                 name="position"
                 value={input.position}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-60 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-full my-1"
               />
             </div>
             <div>
@@ -181,7 +181,7 @@ export default function PostJob() {
                 name="postDate"
                 value={input.postDate}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-60 my-1"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-full my-1"
               />
             </div>
             <div>
@@ -191,7 +191,7 @@ export default function PostJob() {
                 name="expiryDate"
                 value={input.expiryDate}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 w-full"
               />
             </div>
             {companies && companies.length > 0 && (

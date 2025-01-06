@@ -40,7 +40,6 @@ export default function AdminUsers() {
       });
       if (res.data.success) {
         toast.success("Xóa người dùng thành công");
-        // Cập nhật danh sách người dùng sau khi xóa
         fetchUsers(currentPage);
       }
     } catch (error) {
