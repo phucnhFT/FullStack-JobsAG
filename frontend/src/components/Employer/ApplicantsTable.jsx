@@ -1,7 +1,6 @@
-import { Popover, PopoverContent } from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { APPLICANTS_API } from '@/utils/constant';
-import { PopoverTrigger } from '@radix-ui/react-popover';
 import axios from 'axios';
 import { MoreHorizontal } from 'lucide-react';
 import React from 'react'
@@ -12,7 +11,6 @@ export default function ApplicantsTable() {
   const { applicants } = useSelector((store) => store.application);
 
   const statusHandler = async (status, id) => {
-    console.log("called");
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.post(
