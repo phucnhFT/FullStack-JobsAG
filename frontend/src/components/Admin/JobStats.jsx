@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
 
-const JobStats = () => {
+export default function JobStats() {
   const [stats, setStats] = useState({ weekly: 0, monthly: 0, yearly: 0 });
 
   // Hàm để lấy thống kê công việc
@@ -45,18 +45,18 @@ const JobStats = () => {
             Trong tuần: {stats.weekly}
           </motion.li>
           <motion.li
-            initial={{ opacity: 0, y: 20 }} // Hiệu ứng khởi đầu
-            animate={{ opacity: 1, y: 0 }} // Hiệu ứng khi xuất hiện
-            exit={{ opacity: 0, y: -20 }} // Hiệu ứng khi rời khỏi
-            transition={{ duration: 0.5 }} // Thời gian chuyển động
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
           >
             Trong tháng: {stats.monthly}
           </motion.li>
           <motion.li
-            initial={{ opacity: 0, y: 20 }} // Hiệu ứng khởi đầu
-            animate={{ opacity: 1, y: 0 }} // Hiệu ứng khi xuất hiện
-            exit={{ opacity: 0, y: -20 }} // Hiệu ứng khi rời khỏi
-            transition={{ duration: 0.5 }} // Thời gian chuyển động
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }} 
+            transition={{ duration: 0.5 }}
           >
             Trong năm: {stats.yearly}
           </motion.li>
@@ -66,4 +66,3 @@ const JobStats = () => {
   );
 };
 
-export default JobStats;

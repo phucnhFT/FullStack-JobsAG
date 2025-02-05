@@ -40,7 +40,7 @@ export default function Navbar() {
         <div>
           <Link to="/">
             <h1 className="text-2xl font-bold">
-              Jobs<span className="text-[#6b21a8]">AG</span>
+              Jobs<span className="text-[#2a21a8]">AG</span>
             </h1>
           </Link>
         </div>

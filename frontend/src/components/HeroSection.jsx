@@ -27,7 +27,7 @@ export default function HeroSection() {
         </span>
         <h1 className="text-3xl md:text-5xl font-bold">
           Tìm kiếm, ứng tuyển & <br /> nhận việc{" "}
-          <span className="text-[#6A38C2]">mơ ước của bạn</span>
+          <span className="text-[#2a21a8]">mơ ước của bạn</span>
         </h1>
         <p className="text-sm md:text-base">
           Tìm kiếm và nộp đơn cho công việc phù hợp nhất với bạn

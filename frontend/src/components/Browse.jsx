@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllJobs, setSearchedQuery } from "@/redux/JobSlice.js";
 import Job from "@/components/Job.jsx";
 import axios from "axios";
-import { JOB_API } from "@/utils/constant"; // Ensure this constant is defined
+import { JOB_API } from "@/utils/constant"; 
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import Navbar from "@/components/shared/Navbar";
 

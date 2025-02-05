@@ -205,8 +205,8 @@ export const updateProfile = async (req, res) => {
 
     //sơ yếu lý lịch sẽ được gửi sau ở đây...
     if (cloudResponse) {
-      user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+      user.profile.resume = cloudResponse.secure_url;
+      user.profile.resumeOriginalName = file.originalname; 
     }
 
 
