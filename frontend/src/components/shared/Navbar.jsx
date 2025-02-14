@@ -73,6 +73,9 @@ export default function Navbar() {
                 <li>
                   <Link to="/admin/jobs">Quản lý Công việc</Link>
                 </li>
+                <li>
+                  <Link to="/admin/caterogy">Quản lý Danh mục</Link>
+                </li>
               </>
             ) : (
               <>

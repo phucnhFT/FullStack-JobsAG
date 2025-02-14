@@ -260,22 +260,42 @@ export const handleJobApproval = async (req, res) => {
     return res.status(500).json({ message: "Lỗi khi xử lý yêu cầu" });
   }
 };
-
-
-// Hàm thống kê số lượng công việc đã đăng trong tuần, tháng và năm
+//update stars
 export const getJobStats = async (req, res) => {
   try {
-    const currentDate = new Date();
-    
+    const { year, month, day } = req.query;
+
+    // Kiểm tra xem người dùng đã cung cấp ngày tháng năm hay chưa
+    if (!year || !month || !day) {
+      return res
+        .status(400)
+        .json({ message: "Vui lòng cung cấp ngày tháng năm" });
+    }
+
+    // Tạo ngày tháng năm từ tham số
+    const selectedDate = new Date(year, month - 1, day);
+
     // Tính toán thời gian bắt đầu cho tuần, tháng và năm
-    const startOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()));
-    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+    const startOfWeek = new Date(
+      selectedDate.setDate(selectedDate.getDate() - selectedDate.getDay())
+    );
+    const startOfMonth = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      1
+    );
+    const startOfYear = new Date(selectedDate.getFullYear(), 0, 1);
 
     // Thống kê số lượng công việc
-    const weeklyJobs = await Job.countDocuments({ postDate: { $gte: startOfWeek } });
-    const monthlyJobs = await Job.countDocuments({ postDate: { $gte: startOfMonth } });
-    const yearlyJobs = await Job.countDocuments({ postDate: { $gte: startOfYear } });
+    const weeklyJobs = await Job.countDocuments({
+      postDate: { $gte: startOfWeek },
+    });
+    const monthlyJobs = await Job.countDocuments({
+      postDate: { $gte: startOfMonth },
+    });
+    const yearlyJobs = await Job.countDocuments({
+      postDate: { $gte: startOfYear },
+    });
 
     return res.status(200).json({
       success: true,
@@ -319,7 +339,7 @@ export const getAllJobsForAdmin = async (req, res) => {
 export const deleteJob = async (req, res) => {
   try {
     const jobId = req.params.id; // Lấy ID công việc từ tham số URL
-    const job = await Job.findByIdAndDelete(jobId); // Tìm và xóa công việc
+    const job = await Job.findByIdAndDelete(jobId);
 
     if (!job) {
       return res.status(404).json({

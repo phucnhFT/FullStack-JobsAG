@@ -42,7 +42,7 @@ export default function ResetPassword() {
         toast.success(res.data.message);
       }
 
-      setError(""); // Reset lỗi nếu không có lỗi
+      setError("");
     } catch (err) {
       setError(err.response.data?.message);
       toast.error(err.response.data?.message);

@@ -12,9 +12,10 @@ const filterData = [
   {
     filterType: "Công việc liên quan",
     array: [
-      "Lập trình viên",
+      "Nhân viên lập trình",
       "Nông nghiệp & Nông sản",
       "Quản lí nhân sự",
+      "Hướng dẫn viên du lịch",
       "Nhân viên",
     ],
   },

@@ -4,14 +4,27 @@ import { JOB_API } from "@/utils/constant";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function JobStats() {
   const [stats, setStats] = useState({ weekly: 0, monthly: 0, yearly: 0 });
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const [day, setDay] = useState(new Date().getDate());
 
   // Hàm để lấy thống kê công việc
   const fetchJobStats = async () => {
     try {
-      const res = await axios.get(`${JOB_API}/stats`, {
+      const res = await axios.get(`${JOB_API}/stats?year=${year}&month=${month}&day=${day}`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -25,7 +38,25 @@ export default function JobStats() {
 
   useEffect(() => {
     fetchJobStats(); // Gọi hàm khi component được mount
-  }, []);
+  }, [year, month, day]);
+
+  const data = [
+    { name: "Tuần", uv: stats.weekly },
+    { name: "Tháng", uv: stats.monthly },
+    { name: "Năm", uv: stats.yearly },
+  ];
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+  };
+
+  const handleMonthChange = (e) => {
+    setMonth(e.target.value);
+  };
+
+  const handleDayChange = (e) => {
+    setDay(e.target.value);
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -35,34 +66,58 @@ export default function JobStats() {
         <h2 className="text-lg font-semibold">
           Số lượng công việc đã đăng trên hệ thống
         </h2>
-        <ul className="list-disc pl-5">
-          <motion.li
-            initial={{ opacity: 0, y: 20 }} // Hiệu ứng khởi đầu
-            animate={{ opacity: 1, y: 0 }} // Hiệu ứng khi xuất hiện
-            exit={{ opacity: 0, y: -20 }} // Hiệu ứng khi rời khỏi
-            transition={{ duration: 0.5 }} // Thời gian chuyển động
+        <div className="flex justify-between mb-4">
+          <div>
+            <label>Năm:</label>
+            <select value={year} onChange={handleYearChange}>
+              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>    
+          <div>
+            <label>Tháng:</label>
+            <select value={month} onChange={handleMonthChange}>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Ngày:</label>
+            <select value={day} onChange={handleDayChange}>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
           >
-            Trong tuần: {stats.weekly}
-          </motion.li>
-          <motion.li
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-          >
-            Trong tháng: {stats.monthly}
-          </motion.li>
-          <motion.li
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }} 
-            transition={{ duration: 0.5 }}
-          >
-            Trong năm: {stats.yearly}
-          </motion.li>
-        </ul>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="uv" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
-};
-
+}

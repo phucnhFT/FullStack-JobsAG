@@ -20,6 +20,7 @@ import CompanySetup from "@/components/Employer/CompanySetup";
 import EmployerJobs from "@/components/Employer/EmployerJobs";
 import PostJob from "@/components/Employer/PostJob";
 import Applicants from "@/components/Employer/Applicants";
+import CaterogyAdmin from "@/components/Admin/CaterogyAdmin";
 
 const appRouter = createBrowserRouter([
   // Ứng Viên
@@ -81,6 +82,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/jobs",
     element: <JobAdmin />,
+  },
+  {
+    path: "/admin/caterogy",
+    element: <CaterogyAdmin />,
   },
 
   //Nhà Tuyển dụng

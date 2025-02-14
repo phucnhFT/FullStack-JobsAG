@@ -25,9 +25,9 @@ export default function HeroSection() {
         <span className="mx-auto px-4 py-2 rounded-full bg-gray-100 text-[#F83002] font-medium">
           No. 1 JobsAG Website
         </span>
-        <h1 className="text-3xl md:text-5xl font-bold">
+        <h1 className="text-3xl md:text-5xl">
           Tìm kiếm, ứng tuyển & <br /> nhận việc{" "}
-          <span className="text-[#2a21a8]">mơ ước của bạn</span>
+          <span className="text-[#2a21a8] font-bold">mơ ước của bạn</span>
         </h1>
         <p className="text-sm md:text-base">
           Tìm kiếm và nộp đơn cho công việc phù hợp nhất với bạn
