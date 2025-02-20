@@ -5,7 +5,7 @@ import {
   getCompanyId,
   updateCompany,
 } from "../controllers/companyControllers.js";
-import {authenticate} from "../middlewares/authenticate.js";
+import {authenticate, isAdmin} from "../middlewares/authenticate.js";
 import { singleUpload } from "../middlewares/mutler.js";
 
 const router = express.Router();

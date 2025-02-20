@@ -24,9 +24,12 @@ export default function JobStats() {
   // Hàm để lấy thống kê công việc
   const fetchJobStats = async () => {
     try {
-      const res = await axios.get(`${JOB_API}/stats?year=${year}&month=${month}&day=${day}`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${JOB_API}/stats?year=${year}&month=${month}&day=${day}`,
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         setStats(res.data.stats);
       }
@@ -40,11 +43,15 @@ export default function JobStats() {
     fetchJobStats(); // Gọi hàm khi component được mount
   }, [year, month, day]);
 
-  const data = [
-    { name: "Tuần", uv: stats.weekly },
-    { name: "Tháng", uv: stats.monthly },
-    { name: "Năm", uv: stats.yearly },
-  ];
+  const createChartData = (stats) => {
+    return [
+      { name: "Tuần", uv: stats.weekly || 0 },
+      { name: "Tháng", uv: stats.monthly || 0 },
+      { name: "Năm", uv: stats.yearly || 0 },
+    ];
+  };
+
+  const data = createChartData(stats);
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -70,13 +77,13 @@ export default function JobStats() {
           <div>
             <label>Năm:</label>
             <select value={year} onChange={handleYearChange}>
-              {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+              {Array.from({ length: 10 }, (_, i) => 2024 + i).map((y) => (
                 <option key={y} value={y}>
                   {y}
                 </option>
               ))}
             </select>
-          </div>    
+          </div>
           <div>
             <label>Tháng:</label>
             <select value={month} onChange={handleMonthChange}>
@@ -110,8 +117,7 @@ export default function JobStats() {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
-            <YAxis />
+            <YAxis domain={[0, "dataMax"]} />
             <Tooltip />
             <Legend />
             <Bar dataKey="uv" fill="#8884d8" />

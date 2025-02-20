@@ -12,17 +12,21 @@ const filterData = [
   {
     filterType: "Công việc liên quan",
     array: [
-      "Nhân viên lập trình",
+      "Kỹ sư phần mềm",
       "Nông nghiệp & Nông sản",
       "Quản lí nhân sự",
       "Hướng dẫn viên du lịch",
-      "Nhân viên",
+      "Chuyên viên tư vấn",
+      "Nhân viên tiếp thị",
+      "Nhân viên chuyên SEO",
+      "Nhân viên văn phòng",
+      "Nhân viên quản trị",
+      "Nhân viên kinh doanh",
+      "Nhân viên marketing",
+      "Nhân viên bảo vệ",
+      "Nhân viên chăm sóc khách hàng",
     ],
   },
-  // {
-  //   filterType: "Lương",
-  //   array: ["12", "12 triệu - 20 triệu", "trên 20 triệu"],
-  // },
 ];
 
 export default function FilterCard(){

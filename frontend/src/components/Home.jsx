@@ -3,7 +3,6 @@ import HeroSection from '@/components/HeroSection'
 import LatestJobs from '@/components/LatestJobs'
 import Footer from '@/components/shared/Footer'
 import Navbar from '@/components/shared/Navbar'
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
