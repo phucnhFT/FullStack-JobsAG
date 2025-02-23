@@ -12,6 +12,7 @@ import {
   setInterestedCompanies,
   removeInterestedCompany,
 } from "@/redux/userSlice";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export default function InterestedCompanies() {
   const { loading, interestedCompanies } = useSelector((store) => store.user);
@@ -82,7 +83,12 @@ export default function InterestedCompanies() {
                     key={company._id}
                     className="border border-gray-200 p-4 rounded-md"
                   >
-                    <h2 className="font-medium text-lg">{company.name}</h2>
+                    <Avatar>
+                      <AvatarImage src={company.logo} />
+                    </Avatar>
+                    <h2 className="font-medium text-lg">
+                      {company.name}  
+                    </h2>
                     <p className="text-sm text-gray-600">
                       {company?.description}
                     </p>

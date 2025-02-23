@@ -78,7 +78,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
         <DialogContent
           className="sm:max-w-[425px]"
           onInteractOutside={() => setOpen(false)}
-        >2
+        >
           <DialogHeader>
             <DialogTitle>Cập nhật hồ sơ</DialogTitle>
           </DialogHeader>

@@ -231,6 +231,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+//quên mật khẩu
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -465,4 +466,40 @@ export const deleteUser = async (req, res) => {
   }
 }
 
+//chi tiết người dùng
+export const getUserDetail = async (req, res) => {
+  try {
+    const id = req.params.id;
 
+    // Kiểm tra ID người dùng
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID người dùng không hợp lệ",
+      });
+    }
+
+    // Tìm kiếm người dùng
+    const user = await User.findById(id);
+
+    // Kiểm tra người dùng
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Người dùng không tồn tại",
+      });
+    }
+
+    // Trả về thông tin người dùng
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (err) {
+    console.error("Lỗi khi xem chi tiết người dùng:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi khi xem chi tiết người dùng",
+    });
+  }
+};

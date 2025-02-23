@@ -10,7 +10,8 @@ import {
   removeInterestedCompany,
   getInterestedCompany,
   getUsers,
-  deleteUser
+  deleteUser,
+  getUserDetail
 } from "../controllers/userControllers.js";
 import {authenticate, isAdmin} from "../middlewares/authenticate.js";
 import { singleUpload } from "../middlewares/mutler.js";
@@ -34,5 +35,7 @@ router.route("/get-interested").get(authenticate, getInterestedCompany);
 //Admin
 router.route("/get-users").get(authenticate, isAdmin, getUsers);
 router.route("/delete-user/:id").delete(authenticate, isAdmin, deleteUser);
+router.route("/get-detail/:id").get(authenticate, isAdmin, getUserDetail);
+
 
 export default router;

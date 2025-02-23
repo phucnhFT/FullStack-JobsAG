@@ -15,6 +15,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
 
 export default function AdminJobs() {
   const [jobs, setJobs] = useState([]);
@@ -24,6 +25,8 @@ export default function AdminJobs() {
   const [isOpen, setIsOpen] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [currentJobId, setCurrentJobId] = useState(null);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [filteredJobs, setFilteredJobs] = useState([]);
 
   const fetchJobs = async (page) => {
     try {
@@ -98,7 +101,7 @@ export default function AdminJobs() {
     if (!confirmDelete) return;
 
     try {
-      const res = await axios.delete(`${ JOB_API}/delete-job/${jobId}`, {
+      const res = await axios.delete(`${JOB_API}/delete-job/${jobId}`, {
         withCredentials: true,
       });
       if (res.data.success) {
@@ -116,6 +119,17 @@ export default function AdminJobs() {
     fetchJobs(page);
   };
 
+  const handleSearch = (e) => {
+    setSearchKeyword(e.target.value);
+    const filteredJobs = jobs.filter(
+      (job) =>
+        job.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        job.description.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        job.company.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredJobs(filteredJobs);
+  };
+
   useEffect(() => {
     fetchJobs(currentPage);
   }, [currentPage]);
@@ -126,6 +140,15 @@ export default function AdminJobs() {
       <h1 className="text-xl md:text-2xl font-bold mb-4 mt-6 md:mt-10">
         Danh sách Công việc
       </h1>
+      <div className="flex justify-between mb-4">
+        <Input
+          type="text"
+          placeholder="Tìm kiếm công việc"
+          value={searchKeyword}
+          onChange={handleSearch}
+          className="w-full md:w-1/2 py-2 pl-10 text-sm text-gray-700"
+        />
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
@@ -137,62 +160,136 @@ export default function AdminJobs() {
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Mô tả</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Lương</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+                Thời gian đăng tuyển
+              </th>
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+                Thời gian hết hạn ứng tuyển
+              </th>
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
                 Trạng thái
               </th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-medium">
-            {jobs.map((job) => (
-              <motion.tr
-                key={job._id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                className="border-b border-gray-200 hover:bg-gray-100"
-              >
-                <td className="py-3 px-4 md:py-3 md:px-6">
-                  <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                    <AvatarImage src={job?.company?.logo} />
-                  </Avatar>
-                </td>
-                <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
-                <td className="py-3 px-4 md:py-3 md:px-6">{job.description}</td>
-                <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
-                <td className="py-3 px-4 md:py-3 md:px-6 flex items-center">
-                  {job.approved ? (
-                    <span className="text-green-500 flex items-center">
-                      <CheckCircle className="mr-1" /> Đã phê duyệt
-                    </span>
-                  ) : (
-                    <span className="text-red-500 flex items-center">
-                      <XCircle className="mr-1" /> Chưa phê duyệt
-                    </span>
-                  )}
-                </td>
-                <td className="py-3 px-4 md:py-3 md:px-6 flex space-x-2">
-                  {!job.approved && (
-                    <Button
-                      onClick={() => handleApproveJob(job._id)}
-                      className="bg-green-500 text-white"
-                    >
-                      Phê duyệt
-                    </Button>
-                  )}
-                  <Button
-                    onClick={() => openRejectModal(job._id)}
-                    className="bg-red-500 text-white"
+            {searchKeyword
+              ? filteredJobs.map((job) => (
+                  <motion.tr
+                    key={job._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    Từ chối
-                  </Button>
-                  <Button
-                    onClick={() => handleDeleteJob(job._id)}
-                    className="bg-yellow-500 text-white"
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
+                        <AvatarImage src={job?.company?.logo} />
+                      </Avatar>
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.description}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.postDate.split("T")[0]}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.expiryDate.split("T")[0]}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6 flex items-center">
+                      {job.approved ? (
+                        <span className="text-green-500 flex items-center">
+                          <CheckCircle className="mr-1" /> Đã phê duyệt
+                        </span>
+                      ) : (
+                        <span className="text-red-500 flex items-center">
+                          <XCircle className="mr-1" /> Chưa phê duyệt
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6 flex space-x-2">
+                      {!job.approved && (
+                        <Button
+                          onClick={() => handleApproveJob(job._id)}
+                          className="bg-green-500 text-white"
+                        >
+                          Phê duyệt
+                        </Button>
+                      )}
+                      <Button
+                        onClick={() => openRejectModal(job._id)}
+                        className="bg-red-500 text-white"
+                      >
+                        Từ chối
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteJob(job._id)}
+                        className="bg-yellow-500 text-white"
+                      >
+                        Xóa
+                      </Button>
+                    </td>
+                  </motion.tr>
+                ))
+              : jobs.map((job) => (
+                  <motion.tr
+                    key={job._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="border-b border-gray-200 hover:bg-gray-100"
                   >
-                    Xóa
-                  </Button>
-                </td>
-              </motion.tr>
-            ))}
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
+                        <AvatarImage src={job?.company?.logo} />
+                      </Avatar>
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.description}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.postDate.split("T")[0]}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {job.expiryDate.split("T")[0]}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6 flex items-center">
+                      {job.approved ? (
+                        <span className="text-green-500 flex items-center">
+                          <CheckCircle className="mr-1" /> Đã phê duyệt
+                        </span>
+                      ) : (
+                        <span className="text-red-500 flex items-center">
+                          <XCircle className="mr-1" /> Chưa phê duyệt
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 md:py-3 md:px-6 flex space-x-2">
+                      {!job.approved && (
+                        <Button
+                          onClick={() => handleApproveJob(job._id)}
+                          className="bg-green-500 text-white"
+                        >
+                          Phê duyệt
+                        </Button>
+                      )}
+                      <Button
+                        onClick={() => openRejectModal(job._id)}
+                        className="bg-red-500 text-white"
+                      >
+                        Từ chối
+                      </Button>
+                      <Button
+                        onClick={() => handleDeleteJob(job._id)}
+                        className="bg-yellow-500 text-white"
+                      >
+                        Xóa
+                      </Button>
+                    </td>
+                  </motion.tr>
+                ))}
           </tbody>
         </table>
       </div>
@@ -203,7 +300,7 @@ export default function AdminJobs() {
             onClick={() => handlePageChange(index + 1)}
             className={`mx-1 ${
               currentPage === index + 1
-                ? "bg-blue-500 text-white"
+                ? "bg-[#2a21a8] text-white"
                 : "bg-gray-200"
             }`}
           >
