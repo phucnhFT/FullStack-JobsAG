@@ -65,6 +65,12 @@ export default function JobDescription() {
     };
     fetchSingleJob();
   }, [jobId, dispatch, user?._id]);
+   const formatNumber = (num) => {
+     if (typeof num !== "number") {
+       return "Không có dữ liệu";
+     }
+     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   };
 
   return (
     <>
@@ -81,7 +87,7 @@ export default function JobDescription() {
                 {singleJob?.jobType}
               </Badge>
               <Badge className={"text-[#7209b7] font-bold"} variant="ghost">
-                {singleJob?.salary} VND
+                {formatNumber(singleJob?.salary)} VND
               </Badge>
             </div>
           </div>
@@ -134,7 +140,7 @@ export default function JobDescription() {
           <h1 className="font-bold my-1">
             Lương:{" "}
             <span className="pl-4 font-normal text-gray-800">
-              {singleJob?.salary} VND
+              {formatNumber(singleJob?.salary)} VND
             </span>
           </h1>
           <h1 className="font-bold my-1">

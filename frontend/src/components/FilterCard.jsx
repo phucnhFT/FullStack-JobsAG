@@ -9,24 +9,6 @@ const filterData = [
     filterType: "Địa điểm",
     array: ["AN GIANG", "TP HCM", "HÀ NỘI"],
   },
-  {
-    filterType: "Công việc liên quan",
-    array: [
-      "Kỹ sư phần mềm",
-      "Nông nghiệp & Nông sản",
-      "Quản lí nhân sự",
-      "Hướng dẫn viên du lịch",
-      "Chuyên viên tư vấn",
-      "Nhân viên tiếp thị",
-      "Nhân viên chuyên SEO",
-      "Nhân viên văn phòng",
-      "Nhân viên quản trị",
-      "Nhân viên kinh doanh",
-      "Nhân viên marketing",
-      "Nhân viên bảo vệ",
-      "Nhân viên chăm sóc khách hàng",
-    ],
-  },
 ];
 
 export default function FilterCard(){

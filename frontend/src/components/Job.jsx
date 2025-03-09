@@ -36,14 +36,17 @@ export default function Job({ job }) {
       toast.error("Lỗi hoặc công ty đã bị xoá !!");
     }
   };
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   return (
     <div className="p-4 rounded-md shadow-xl bg-white border border-gray-100">
       <div className="flex items-center justify-between">
         <p className="text-xs md:text-sm text-gray-500">
           {daysAgoFunction(job?.createdAt) === 0
-            ? "Today"
-            : `${daysAgoFunction(job?.createdAt)} days ago`}
+            ? "Hôm nay"
+            : `${daysAgoFunction(job?.createdAt)} ngày trước`}
         </p>
         <Button
           variant="outline"
@@ -97,7 +100,7 @@ export default function Job({ job }) {
           className={"text-[#7209b7] font-bold text-xs md:text-sm"}
           variant="ghost"
         >
-          {job?.salary} VND
+          {formatNumber(job.salary)} VND
         </Badge>
       </div>
       <div className="flex flex-wrap items-center gap-4 mt-4">

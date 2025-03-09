@@ -1,6 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { APPLICANTS_API } from '@/utils/constant';
+import { toast } from "sonner";
 import axios from 'axios';
 import { MoreHorizontal } from 'lucide-react';
 import React from 'react'

@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function LatestJobsCard({ job }) {
   const navigate = useNavigate();
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
   return (
     <div
       onClick={() => navigate(`/description/${job._id}`)}
@@ -47,7 +50,7 @@ export default function LatestJobsCard({ job }) {
           className={"text-[#7209b7] font-bold text-xs md:text-sm"}
           variant="ghost"
         >
-          {job?.salary}VND
+          {formatNumber(job.salary)}VND
         </Badge>
       </div>
     </div>
