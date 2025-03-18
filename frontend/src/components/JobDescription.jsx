@@ -65,6 +65,7 @@ export default function JobDescription() {
     };
     fetchSingleJob();
   }, [jobId, dispatch, user?._id]);
+  
    const formatNumber = (num) => {
      if (typeof num !== "number") {
        return "Không có dữ liệu";

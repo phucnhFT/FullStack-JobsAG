@@ -107,7 +107,7 @@ export const postJob = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Tạo công việc thành công",
+      message: "Tạo công việc thành công đợi phê duyệt của Admin",
       newJob,
     });
   } catch (err) {
