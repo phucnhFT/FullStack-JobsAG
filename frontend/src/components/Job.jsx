@@ -32,7 +32,7 @@ export default function Job({ job }) {
         toast.success("Đã Thêm công ty vào danh sách quan tâm");
       }
     } catch (error) {
-      console.error("Error adding to favorites:", error);
+      //console.error("Error adding to favorites:", error);
       toast.error("Lỗi hoặc công ty đã bị xoá !!");
     }
   };

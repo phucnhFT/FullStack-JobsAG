@@ -36,7 +36,7 @@ export default function JobDescription() {
           ...singleJob,
           applications: [...singleJob.applications, { applicant: user?._id }],
         };
-        dispatch(setSingleJob(updatedSingleJob)); // giúp cập nhật giao diện người dùng theo thời gian thực
+        dispatch(setSingleJob(updatedSingleJob));
         toast.success(res.data.message);
       }
     } catch (e) {
@@ -66,6 +66,7 @@ export default function JobDescription() {
     fetchSingleJob();
   }, [jobId, dispatch, user?._id]);
   
+  // format vnd
    const formatNumber = (num) => {
      if (typeof num !== "number") {
        return "Không có dữ liệu";

@@ -120,7 +120,7 @@ export const login = async (req, res) => {
     const { role } = req.body;
     if (role !== user.role) {
       return res.status(400).json({
-        message: "Tài khoản không tồn tại với vai trò hiện tại.",
+        message: "Vui lòng chọn vai trò đăng nhập",
         success: false,
       });
     }
@@ -181,7 +181,11 @@ export const updateProfile = async (req, res) => {
 
     const file = req.file;
     const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content)
+    const cloudResponse = await cloudinary.uploader.upload(fileUri, {
+      resource_type: "raw", //lưu file dưới dạng file gốc (PDF, ZIP, DOCX, ...)
+      public_id: "cv_pdf",
+      format: "pdf",
+    });
 
     let skillsArray;
     if (skills) {
@@ -196,6 +200,7 @@ export const updateProfile = async (req, res) => {
         success: false,
       });
     }
+    
     // cập nhật dữ liệu
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
@@ -203,7 +208,6 @@ export const updateProfile = async (req, res) => {
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
-    //sơ yếu lý lịch sẽ được gửi sau ở đây...
     if (cloudResponse) {
       user.profile.resume = cloudResponse.secure_url;
       user.profile.resumeOriginalName = file.originalname; 

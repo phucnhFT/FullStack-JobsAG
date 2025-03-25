@@ -79,7 +79,7 @@ export default function ForgotPassword() {
 
           {/* Chuyển đến trang Đăng nhập */}
           <span className="text-sm">
-            Nhớ mật khẩu?{" "}
+            Nhớ mật khẩu?
             <Link to="/Login" className="text-blue-600">
               Đăng nhập
             </Link>
