@@ -19,7 +19,8 @@ export const register = async (req, res) => {
     }
     const file = req.file;
     const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri);
+
 
     const user = await User.findOne({ email });
     if (user) {
@@ -213,7 +214,6 @@ export const updateProfile = async (req, res) => {
       user.profile.resumeOriginalName = file.originalname; 
     }
 
-
     await user.save();
 
     user = {
@@ -309,7 +309,9 @@ export const resetPassword = async (req, res) => {
     user.resetTokenExpire = undefined;
 
     await user.save();
-    res.status(200).json({ message: "cập nhật mật khẩu thành công" });
+    res
+      .status(200)
+      .json({ success: true, message: "cập nhật mật khẩu thành công" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Lỗi khi đặt lại mật khẩu" });

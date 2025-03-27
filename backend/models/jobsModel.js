@@ -34,6 +34,7 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
     jobType: {
+      //thêm enum
       // loại công việc
       type: String,
       required: true,

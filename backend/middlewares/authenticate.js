@@ -9,7 +9,7 @@ const authenticate = async (req, res, next) => {
       return res.status(401).json({
         message: "Người dùng chưa được xác thực",
         success: false,
-      });
+      }); 
     }
 
     const decode = jwt.verify(token, process.env.JWT_SECRET); // giải mã token

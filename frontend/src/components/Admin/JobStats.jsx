@@ -15,6 +15,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+//xem chi tiết công việc từng công ty đăng theo tháng và ngày và năm bằng chart
+//ẩn nút từ chối khi duyệt xong
+
 export default function JobStats() {
   const [stats, setStats] = useState({ weekly: 0, monthly: 0, yearly: 0 });
   const [year, setYear] = useState(new Date().getFullYear());

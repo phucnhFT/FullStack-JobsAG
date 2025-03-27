@@ -84,9 +84,19 @@ export default function AdminJobs() {
       );
       if (res.data.success) {
         toast.success("Công việc đã bị từ chối và thông báo đã được gửi.");
-        fetchJobs(currentPage);
-        setIsOpen(false);
-        setRejectReason("");
+        const deleteRes = await axios.delete(
+          `${JOB_API}/delete-job/${currentJobId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (deleteRes.data.success) {
+          fetchJobs(currentPage);
+          setIsOpen(false);
+          setRejectReason("");
+        } else {
+          toast.error("Lỗi khi xóa công việc.");
+        }
       }
     } catch (error) {
       console.error(error);
@@ -134,6 +144,10 @@ export default function AdminJobs() {
     fetchJobs(currentPage);
   }, [currentPage]);
 
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <div className="container mx-auto p-4 md:p-6">
       <Navbar />
@@ -153,16 +167,14 @@ export default function AdminJobs() {
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">
-              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
-                Logo Công ty
-              </th>
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left">Logo</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Tiêu đề</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Mô tả</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Lương</th>
-              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
                 Thời gian đăng tuyển
               </th>
-              <th className="py-3 px-4 md:py-3 md:px-6 text-left">
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
                 Thời gian hết hạn ứng tuyển
               </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">
@@ -189,7 +201,9 @@ export default function AdminJobs() {
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {job.description}
                     </td>
-                    <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {formatNumber(job.salary)} VND
+                    </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {job.postDate.split("T")[0]}
                     </td>
@@ -216,18 +230,19 @@ export default function AdminJobs() {
                           Phê duyệt
                         </Button>
                       )}
-                      <Button
-                        onClick={() => openRejectModal(job._id)}
-                        className="bg-red-500 text-white"
-                      >
-                        Từ chối
-                      </Button>
-                      <Button
-                        onClick={() => handleDeleteJob(job._id)}
-                        className="bg-yellow-500 text-white"
-                      >
-                        Xóa
-                      </Button>
+                      {!job.approved && (
+                        <Button
+                          onClick={() => openRejectModal(job._id)}
+                          className="bg-red-500 text-white"
+                        >
+                          Từ chối
+                        </Button>
+                      )}
+                      {job.approved && (
+                        <Button onClick={() => handleDeleteJob(job._id)}>
+                          Xóa
+                        </Button>
+                      )}
                     </td>
                   </motion.tr>
                 ))
@@ -248,7 +263,9 @@ export default function AdminJobs() {
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {job.description}
                     </td>
-                    <td className="py-3 px-4 md:py-3 md:px-6">{job.salary}</td>
+                    <td className="py-3 px-4 md:py-3 md:px-6">
+                      {formatNumber(job.salary)} VND
+                    </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {job.postDate.split("T")[0]}
                     </td>
@@ -268,25 +285,23 @@ export default function AdminJobs() {
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6 flex space-x-2">
                       {!job.approved && (
-                        <Button
-                          onClick={() => handleApproveJob(job._id)}
-                          className="bg-green-500 text-white"
-                        >
+                        <Button onClick={() => handleApproveJob(job._id)}>
                           Phê duyệt
                         </Button>
                       )}
-                      <Button
-                        onClick={() => openRejectModal(job._id)}
-                        className="bg-red-500 text-white"
-                      >
-                        Từ chối
-                      </Button>
-                      <Button
-                        onClick={() => handleDeleteJob(job._id)}
-                        className="bg-yellow-500 text-white"
-                      >
-                        Xóa
-                      </Button>
+                      {!job.approved && (
+                        <Button
+                          onClick={() => openRejectModal(job._id)}
+                          className="bg-red-500 text-white"
+                        >
+                          Từ chối
+                        </Button>
+                      )}
+                      {job.approved && (
+                        <Button onClick={() => handleDeleteJob(job._id)}>
+                          Xóa
+                        </Button>
+                      )}
                     </td>
                   </motion.tr>
                 ))}

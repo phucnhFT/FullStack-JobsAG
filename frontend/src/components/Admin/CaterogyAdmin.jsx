@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
 
+// xem nhóm danh mục
+
 export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

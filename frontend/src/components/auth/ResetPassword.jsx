@@ -14,21 +14,25 @@ import { useDispatch } from "react-redux";
 export default function ResetPassword() {
   const { token } = useParams(); // Lấy token từ URL
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Kiểm tra xem mật khẩu và mật khẩu xác nhận có khớp không
     if (password !== confirmPassword) {
       setError("Mật khẩu xác nhận không khớp.");
       toast.error("Mật khẩu xác nhận không khớp.");
       return;
     }
     try {
-      dispatch(setLoading(true)); // Set loading state
-      const res = await axios.post(`${USER_API}/reset-password/${token}`,{ password },
+      dispatch(setLoading(true));
+      setMessage(""); // Set loading state
+      const res = await axios.post(
+        `${USER_API}/reset-password/${token}`,
+        { password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -38,11 +42,10 @@ export default function ResetPassword() {
       );
 
       if (res.data.success) {
+        setMessage(res.data.message);
         navigate("/login"); // Điều hướng đến trang đăng nhập sau khi reset mật khẩu thành công
         toast.success(res.data.message);
       }
-
-      setError("");
     } catch (err) {
       setError(err.response.data?.message);
       toast.error(err.response.data?.message);
@@ -98,7 +101,7 @@ export default function ResetPassword() {
           </Button>
 
           <span className="text-sm block text-center mt-4">
-            Quay lại{" "}
+            Quay lại
             <Link
               to="/Login"
               className="text-blue-600 hover:underline transition duration-200"

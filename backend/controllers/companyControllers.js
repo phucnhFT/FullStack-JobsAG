@@ -95,7 +95,7 @@ export const updateCompany = async (req,res) => {
 
       const file = req.file;
       const fileUri = getDataUri(file);
-      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri);
       const logo = cloudResponse.secure_url;
 
       const updateData = { name, description, website, location, logo};
@@ -126,3 +126,5 @@ export const updateCompany = async (req,res) => {
     });
   }
 }
+
+//chi tiet cong ty
