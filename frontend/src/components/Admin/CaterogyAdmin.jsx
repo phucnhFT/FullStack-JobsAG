@@ -13,6 +13,8 @@ export default function AdminCategories() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const limit = 10;
+  const [categoryDetail, setCategoryDetail] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const fetchCategories = async (page) => {
     try {
@@ -52,6 +54,21 @@ export default function AdminCategories() {
     }
   };
 
+  const handleViewCategoryDetail = async (categoryId) => {
+    try {
+      const res = await axios.get(`${CATEGORY_API}/categories/${categoryId}`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        setCategoryDetail(res.data);
+        setIsDialogOpen(true);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi lấy thông tin chi tiết danh mục");
+    }
+  };
+
   useEffect(() => {
     fetchCategories(currentPage);
   }, [currentPage]);
@@ -75,6 +92,7 @@ export default function AdminCategories() {
                 Tên danh mục
               </th>
               <th className="py-2 px-4 md:py-3 md:px-6 text-left">Hành động</th>
+              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Chi tiết</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-medium">
@@ -95,26 +113,53 @@ export default function AdminCategories() {
                     Xóa
                   </Button>
                 </td>
+                <td className="py-2 px-4 md:py-3 md:px-6">
+                  <Button
+                    className="bg-blue-500 text-white"
+                    onClick={() => handleViewCategoryDetail(category._id)}
+                  >
+                    Xem chi tiết
+                  </Button>
+                </td>
               </motion.tr>
             ))}
           </tbody>
         </table>
       </div>
-      <div className="pagination mt-4 flex justify-center">
+      <div className="pagination mt- 4">
         {Array.from({ length: totalPages }, (_, index) => (
-          <Button
-            key={index}
+          <button
+            key={index + 1}
             onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 ${
+            className={`mx-1 px-3 py-1 rounded ${
               currentPage === index + 1
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200"
             }`}
           >
             {index + 1}
-          </Button>
+          </button>
         ))}
       </div>
+
+      {isDialogOpen && categoryDetail && categoryDetail.category && (
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-md p-4 w-1/2">
+            <h2 className="text-xl font-bold mb-2">
+              Thông tin chi tiết danh mục
+            </h2>
+            <p>Tên danh mục: {categoryDetail.category.name}</p>
+            <p>Số công việc: {categoryDetail.jobCount}</p>
+            <p>Số ứng viên: {categoryDetail.applicantCount}</p>
+            <Button
+              className="bg-red-500 text-white"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              Đóng
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

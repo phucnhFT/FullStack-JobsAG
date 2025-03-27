@@ -509,3 +509,81 @@ export const getUserDetail = async (req, res) => {
     });
   }
 };
+
+// thêm mới người dùng Admin
+export const addUser = async (req, res) => {
+  try {
+    const { fullname, email, phoneNumber, password, role } = req.body;
+
+    if (!fullname || !email || !phoneNumber || !password || !role) {
+      return res.status(400).json({
+        message: "Vui lòng nhập đầy đủ các trường !",
+        success: false,
+      });
+    }
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri);
+
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({
+        message: "Email này đã tồn tại",
+        success: false,
+      });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({
+      fullname,
+      email,
+      phoneNumber,
+      password: hashedPassword,
+      role,
+      profile: {
+        profilePhoto: cloudResponse.secure_url,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Thêm người dùng thành công",
+      newUser,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error });
+    console.log(error);
+  }
+};
+
+// cập nhật người dùng Admin
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fullname, email, phoneNumber } = req.body;
+
+    const user = await User.findById(id);
+
+    if (req.file) {
+      const file = req.file;
+      const fileUri = getDataUri(file);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri);
+      user.profile.profilePhoto = cloudResponse.secure_url;
+    }
+
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Cập nhật người dùng thành công",
+      user,
+    });
+  } catch (error) {
+    res.status(404).json({ message: error });
+    console.log(error);
+  }
+};

@@ -172,10 +172,10 @@ export default function AdminJobs() {
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Mô tả</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">Lương</th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
-                Thời gian đăng tuyển
+                Ngày ứng tuyển
               </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
-                Thời gian hết hạn ứng tuyển
+                Ngày hết hạn
               </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">
                 Trạng thái

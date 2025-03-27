@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { USER_API } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,14 @@ import Navbar from "@/components/shared/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -16,6 +24,15 @@ export default function AdminUsers() {
   const limit = 10;
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [selectedUser, setSelectedUser] = useState({});
 
   const fetchUsers = async (page) => {
     try {
@@ -52,6 +69,82 @@ export default function AdminUsers() {
     }
   };
 
+  const handleAddUser = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("fullname", fullname);
+      formData.append("email", email);
+      formData.append("phoneNumber", phone);
+      formData.append("password", password);
+      formData.append("role", role);
+      formData.append("file", avatar);
+
+      const res = await axios.post(`${USER_API}/add-user`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (res.data.success) {
+        toast.success("Thêm người dùng thành công");
+        fetchUsers(currentPage);
+        setIsOpen(false);
+        setFullname("");
+        setEmail("");
+        setPhone("");
+        setPassword("");
+        setRole("");
+        setAvatar(null);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi thêm người dùng");
+    }
+  };
+
+  const handleUpdateUser = async () => {
+     if (!fullname || !email || !phone|| !role) {
+       toast.error("Vui lòng nhập đầy đủ các trường !");
+       return;
+     }
+    try {
+      const formData = new FormData();
+      formData.append("fullname", fullname);
+      formData.append("email", email);
+      formData.append("phoneNumber", phone);
+      if (avatar) formData.append("file", avatar);
+
+      const res = await axios.put(
+        `${USER_API}/update-user/${selectedUser._id}`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success("Cập nhật người dùng thành công");
+        fetchUsers(currentPage);
+        setIsUpdateOpen(false);
+        setFullname("");
+        setEmail("");
+        setPhone("");
+        setAvatar(null);
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi cập nhật người dùng");
+    }
+  };
+
   useEffect(() => {
     fetchUsers(currentPage);
   }, [currentPage]);
@@ -69,6 +162,16 @@ export default function AdminUsers() {
     setFilteredUsers(filteredUsers);
   };
 
+  const handleUpdate = (user) => {
+    setIsUpdateOpen(true);
+    setSelectedUser(user);
+    setFullname(user.fullname);
+    setEmail(user.email);
+    setPhone(user.phoneNumber);
+    setRole(user.role);
+    setAvatar(null);
+  };
+
   return (
     <div className="container mx-auto p-4 md:p-6">
       <Navbar />
@@ -83,6 +186,7 @@ export default function AdminUsers() {
           onChange={handleSearch}
           className="w-full md:w-1/2 py-2 pl-10 text-sm text-gray-700"
         />
+        <Button onClick={() => setIsOpen(true)}>Thêm mới</Button>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -118,15 +222,17 @@ export default function AdminUsers() {
                     <td className="py-2 px-4 md:py-3 md:px-6">{user.role}</td>
                     <td className="py-2 px-4 md:py-3 md:px-6 flex space-x-2">
                       <Link to={`/admin/users/${user._id}`}>
-                        <Button className="bg-blue-500 text-white">
-                          Xem chi tiết
-                        </Button>
+                        <Button>Xem chi tiết</Button>
                       </Link>
                       <Button
-                        className="bg-red-500 text-white"
                         onClick={() => handleDeleteUser(user._id)}
                       >
                         Xóa
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdate(user)}
+                      >
+                        Cập nhật
                       </Button>
                     </td>
                   </motion.tr>
@@ -153,13 +259,17 @@ export default function AdminUsers() {
                     <td className="py-2 px-4 md:py-3 md:px-6">{user.role}</td>
                     <td className="py-2 px-4 md:py-3 md:px-6 flex space-x-2">
                       <Link to={`/admin/users/${user._id}`}>
-                        <Button className=" bg-[#2a21a8]">Xem chi tiết</Button>
+                        <Button>Xem chi tiết</Button>
                       </Link>
                       <Button
-                        className="bg-red-500 text-white"
                         onClick={() => handleDeleteUser(user._id)}
                       >
                         Xóa
+                      </Button>
+                      <Button
+                        onClick={() => handleUpdate(user)}
+                      >
+                        Cập nhật
                       </Button>
                     </td>
                   </motion.tr>
@@ -182,6 +292,142 @@ export default function AdminUsers() {
           </Button>
         ))}
       </div>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Thêm người dùng</DialogTitle>
+          </DialogHeader>
+          <form>
+            <Input
+              type="text"
+              placeholder="Họ và tên"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <Input
+              type="text"
+              placeholder="Số điện thoại"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <Input
+              type="password"
+              placeholder="Mật khẩu"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Role
+              </label>
+              <div className="flex space-x-4">
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="applicant"
+                    name="role"
+                    value="Ứng Viên"
+                    checked={role === "Ứng Viên"}
+                    onChange={(e) => setRole(e.target.value)}
+                  />
+                  <label
+                    className="ml-2 text-sm text-gray-600"
+                    htmlFor="applicant"
+                  >
+                    Ứng Viên
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="radio"
+                    id="employer"
+                    name="role"
+                    value="Nhà Tuyển Dụng"
+                    checked={role === "Nhà Tuyển Dụng"}
+                    onChange={(e) => setRole(e.target.value)}
+                  />
+                  <label
+                    className="ml-2 text-sm text-gray-600"
+                    htmlFor="employer"
+                  >
+                    Nhà Tuyển Dụng
+                  </label>
+                </div>
+              </div>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files[0])}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <DialogFooter>
+              <Button type="button" onClick={handleAddUser}>
+                Thêm người dùng
+              </Button>
+              <DialogClose asChild>
+                <Button className="bg-gray-300">Hủy</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isUpdateOpen} onOpenChange={setIsUpdateOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cập nhật người dùng</DialogTitle>
+          </DialogHeader>
+          <form>
+            <Input
+              type="text"
+              placeholder="Họ và tên"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <Input
+              type="text"
+              placeholder="Số điện thoại"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files[0])}
+              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
+            />
+            <DialogFooter>
+              <Button type="button" onClick={handleUpdateUser}>
+                Cập nhật người dùng
+              </Button>
+              <DialogClose asChild>
+                <Button className="bg-gray-300">Hủy</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
