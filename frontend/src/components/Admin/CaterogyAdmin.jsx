@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
+import { Label } from "@/components/ui/label";
 
 // xem nhóm danh mục
 
@@ -138,12 +139,12 @@ export default function AdminCategories() {
 
       {isDialogOpen && categoryDetail.category && categoryDetail.jobDetails && (
         <div className="fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-md p-4 w-1/2">
+          <div className="bg-white rounded-lg shadow-md p-4 w-1/2 my-2">
             <h2 className="text-xl font-bold mb-2">
               Thông tin chi tiết danh mục
             </h2>
-            <p>Tên danh mục: {categoryDetail.category.name}</p>
-            <h3 className="text-lg font-bold mb-2">Danh sách công việc</h3>
+            <Label>Tên danh mục: {categoryDetail.category.name}</Label>
+            <h3 className="text-lg font-bold mb-2 my-2">Danh sách công việc</h3>
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
               <thead>
                 <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">

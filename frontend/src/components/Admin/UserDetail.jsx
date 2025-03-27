@@ -51,23 +51,18 @@ export default function AdminUserDetail() {
               <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
             </Avatar>
             <h2 className="text-lg font-bold mb-2">Họ & Tên:</h2>
-            <p className="text-gray-600">{user.fullname}</p>
+            <p className="text-gray-600 my-2">{user.fullname}</p>
             <h2 className="text-lg font-bold mb-2">Email:</h2>
-            <p className="text-gray-600">{user.email}</p>
+            <p className="text-gray-600 my-2">{user.email}</p>
             <h2 className="text-lg font-bold mb-2">Role:</h2>
-            <p className="text-gray-600">{user.role}</p>
+            <p className="text-gray-600 my-2">{user.role}</p>
             <h2 className="text-lg font-bold mb-2">Số điện thoại:</h2>
-            <p className="text-gray-600">{user.phoneNumber}</p>
+            <p className="text-gray-600 my-2">{user.phoneNumber}</p>
           </div>
         </div>
       </div>
       <div className="flex justify-center mt-4">
-        <Button
-          className="bg-red-500 text-white"
-          onClick={() => window.history.back()}
-        >
-          Quay lại
-        </Button>
+        <Button onClick={() => window.history.back()}>Quay lại</Button>
       </div>
     </div>
   );

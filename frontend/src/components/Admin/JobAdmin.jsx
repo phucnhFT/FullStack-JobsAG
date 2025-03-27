@@ -28,7 +28,7 @@ export default function AdminJobs() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState({});
-  //const [currentJobDescription, setCurrentJobDescription] = useState({});
+  const [currentJobDescription, setCurrentJobDescription] = useState({});
 
   const fetchJobs = async (page) => {
     try {
@@ -176,7 +176,7 @@ export default function AdminJobs() {
               <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
                 Ngày ứng tuyển
               </th>
-              <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
+              <th className="py-3 px-4 md: py-3 md:px-6 text-left whitespace-nowrap">
                 Ngày hết hạn
               </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">
@@ -285,14 +285,13 @@ export default function AdminJobs() {
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
-                      {job.description.length > 30 ? (
+                      {job.description.length > 10 ? (
                         <div>
                           {showFullDescription[job._id] ? (
                             <span>{job.description}</span>
                           ) : (
-                            <span>{job.description.substring(0, 30)}</span>
+                            <span>{job.description.substring(0, 10)}...</span>
                           )}
-                          <br />
                           <span
                             onClick={() => {
                               setShowFullDescription((prev) => ({

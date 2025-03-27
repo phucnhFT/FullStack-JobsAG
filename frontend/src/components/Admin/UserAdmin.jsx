@@ -16,6 +16,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -106,10 +107,10 @@ export default function AdminUsers() {
   };
 
   const handleUpdateUser = async () => {
-     if (!fullname || !email || !phone|| !role) {
-       toast.error("Vui lòng nhập đầy đủ các trường !");
-       return;
-     }
+    if (!fullname || !email || !phone || !role) {
+      toast.error("Vui lòng nhập đầy đủ các trường !");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("fullname", fullname);
@@ -224,14 +225,10 @@ export default function AdminUsers() {
                       <Link to={`/admin/users/${user._id}`}>
                         <Button>Xem chi tiết</Button>
                       </Link>
-                      <Button
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
+                      <Button onClick={() => handleDeleteUser(user._id)}>
                         Xóa
                       </Button>
-                      <Button
-                        onClick={() => handleUpdate(user)}
-                      >
+                      <Button onClick={() => handleUpdate(user)}>
                         Cập nhật
                       </Button>
                     </td>
@@ -261,14 +258,10 @@ export default function AdminUsers() {
                       <Link to={`/admin/users/${user._id}`}>
                         <Button>Xem chi tiết</Button>
                       </Link>
-                      <Button
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
+                      <Button onClick={() => handleDeleteUser(user._id)}>
                         Xóa
                       </Button>
-                      <Button
-                        onClick={() => handleUpdate(user)}
-                      >
+                      <Button onClick={() => handleUpdate(user)}>
                         Cập nhật
                       </Button>
                     </td>
@@ -299,38 +292,60 @@ export default function AdminUsers() {
             <DialogTitle>Thêm người dùng</DialogTitle>
           </DialogHeader>
           <form>
-            <Input
-              type="text"
-              placeholder="Họ và tên"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <Input
-              type="text"
-              placeholder="Số điện thoại"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <Input
-              type="password"
-              placeholder="Mật khẩu"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
+            <div className="my-2">
+              <Label>Họ và tên</Label>
+              <Input
+                type="text"
+                placeholder="Họ và tên"
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Số điện thoại</Label>
+              <Input
+                type="text"
+                placeholder="Số điện thoại"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Mật khẩu</Label>
+              <Input
+                type="password"
+                placeholder="Mật khẩu"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Ảnh đại diện</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setAvatar(e.target.files[0])}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Role
-              </label>
+              <Label className="block text-sm font-medium text-gray-700 mb-2">
+                Vai trò
+              </Label>
               <div className="flex space-x-4">
                 <div className="flex items-center">
                   <input
@@ -341,12 +356,12 @@ export default function AdminUsers() {
                     checked={role === "Ứng Viên"}
                     onChange={(e) => setRole(e.target.value)}
                   />
-                  <label
+                  <Label
                     className="ml-2 text-sm text-gray-600"
                     htmlFor="applicant"
                   >
                     Ứng Viên
-                  </label>
+                  </Label>
                 </div>
                 <div className="flex items-center">
                   <input
@@ -357,21 +372,15 @@ export default function AdminUsers() {
                     checked={role === "Nhà Tuyển Dụng"}
                     onChange={(e) => setRole(e.target.value)}
                   />
-                  <label
+                  <Label
                     className="ml-2 text-sm text-gray-600"
                     htmlFor="employer"
                   >
                     Nhà Tuyển Dụng
-                  </label>
+                  </Label>
                 </div>
               </div>
             </div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setAvatar(e.target.files[0])}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
             <DialogFooter>
               <Button type="button" onClick={handleAddUser}>
                 Thêm người dùng
@@ -390,33 +399,45 @@ export default function AdminUsers() {
             <DialogTitle>Cập nhật người dùng</DialogTitle>
           </DialogHeader>
           <form>
-            <Input
-              type="text"
-              placeholder="Họ và tên"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <Input
-              type="text"
-              placeholder="Số điện thoại"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setAvatar(e.target.files[0])}
-              className="w-full py-2 pl-10 text-sm text-gray-700 mb-4"
-            />
+            <div className="my-2">
+              <Label>Họ tên</Label>
+              <Input
+                type="text"
+                placeholder="Họ và tên"
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Số điện thoại</Label>
+              <Input
+                type="text"
+                placeholder="Số điện thoại"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
+            <div className="my-2">
+              <Label>Ảnh đại diện</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setAvatar(e.target.files[0])}
+                className="w-full py-2 text-sm text-gray-700 mb-4"
+              />
+            </div>
             <DialogFooter>
               <Button type="button" onClick={handleUpdateUser}>
                 Cập nhật người dùng

@@ -320,6 +320,7 @@ export const getJobStats = async (req, res) => {
   }
 };
 
+
 export const getAllJobsForAdmin = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; // Trang hiện tại
@@ -411,3 +412,4 @@ export const getCompanies = async (req, res) => {
     return res.status(500).json({ message: "Lỗi khi lấy danh sách công ty" });
   }
 };
+
