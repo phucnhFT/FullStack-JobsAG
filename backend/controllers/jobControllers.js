@@ -263,13 +263,18 @@ export const handleJobApproval = async (req, res) => {
 //update stars
 export const getJobStats = async (req, res) => {
   try {
-    const { year, month, day } = req.query;
+    const { year, month, day, companyId } = req.params;
 
-    // Kiểm tra xem người dùng đã cung cấp ngày tháng năm hay chưa
-    if (!year || !month || !day) {
+    if (!year || !month || !day || !companyId) {
       return res
         .status(400)
-        .json({ message: "Vui lòng cung cấp ngày tháng năm" });
+        .json({ message: "Vui lòng cung cấp ngày tháng năm và công ty" });
+    }
+
+    // Kiểm tra xem companyId có hợp lệ hay không
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return res.status(400).json({ message: "Công ty không tồn tại" });
     }
 
     // Tạo ngày tháng năm từ tham số
@@ -289,12 +294,15 @@ export const getJobStats = async (req, res) => {
     // Thống kê số lượng công việc
     const weeklyJobs = await Job.countDocuments({
       postDate: { $gte: startOfWeek },
+      company: companyId,
     });
     const monthlyJobs = await Job.countDocuments({
       postDate: { $gte: startOfMonth },
+      company: companyId,
     });
     const yearlyJobs = await Job.countDocuments({
       postDate: { $gte: startOfYear },
+      company: companyId,
     });
 
     return res.status(200).json({
@@ -304,10 +312,11 @@ export const getJobStats = async (req, res) => {
         monthly: monthlyJobs,
         yearly: yearlyJobs,
       },
+      company: company.name,
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Lỗi khi thống kê công việc" });
+    return res.status(500).json({ message: "Lỗi khi lấy thống kê công việc" });
   }
 };
 
@@ -390,5 +399,15 @@ export const getJobsByCategory = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Lỗi khi tải công việc" });
+  }
+};
+
+export const getCompanies = async (req, res) => {
+  try {
+    const companies = await Company.find();
+    return res.status(200).json({ success: true, companies });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Lỗi khi lấy danh sách công ty" });
   }
 };

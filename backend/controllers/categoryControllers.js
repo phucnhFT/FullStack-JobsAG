@@ -65,14 +65,25 @@ export const getCategoryDetail = async (req, res) => {
         .json({ success: false, message: "Danh mục không tồn tại" });
     }
 
-    const jobCount = await Job.countDocuments({ categoryId });
-    const applicantCount = await Applicant.countDocuments({ categoryId });
+    const jobs = await Job.find({ category: categoryId });
+    const applicants = await Application.find({ job: { $in: jobs.map(job => job._id) } });
+
+    const jobDetails = jobs.map((job) => {
+      const applicantCount = applicants.filter(
+        (applicant) => applicant.job.toString() === job._id.toString()
+      ).length;
+      return {
+        id: job._id,
+        jobName: job.title,
+        applicantCount,
+      };
+    });
 
     return res.status(200).json({
       success: true,
       category,
-      jobCount,
-      applicantCount,
+      jobDetails: jobDetails || [],
+      message: jobDetails?.length > 0 ? "" : "Không có thông tin việc làm",
     });
   } catch (error) {
     console.error(error);

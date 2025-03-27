@@ -13,7 +13,7 @@ export default function AdminCategories() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const limit = 10;
-  const [categoryDetail, setCategoryDetail] = useState(null);
+  const [categoryDetail, setCategoryDetail] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const fetchCategories = async (page) => {
@@ -92,7 +92,6 @@ export default function AdminCategories() {
                 Tên danh mục
               </th>
               <th className="py-2 px-4 md:py-3 md:px-6 text-left">Hành động</th>
-              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Chi tiết</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 text-sm font-medium">
@@ -106,16 +105,11 @@ export default function AdminCategories() {
               >
                 <td className="py-2 px-4 md:py-3 md:px-6">{category.name}</td>
                 <td className="py-2 px-4 md:py-3 md:px-6 flex space-x-2">
-                  <Button
-                    className="bg-red-500 text-white"
-                    onClick={() => handleDeleteCategory(category._id)}
-                  >
+                  <Button onClick={() => handleDeleteCategory(category._id)}>
                     Xóa
                   </Button>
-                </td>
-                <td className="py-2 px-4 md:py-3 md:px-6">
+
                   <Button
-                    className="bg-blue-500 text-white"
                     onClick={() => handleViewCategoryDetail(category._id)}
                   >
                     Xem chi tiết
@@ -142,21 +136,61 @@ export default function AdminCategories() {
         ))}
       </div>
 
-      {isDialogOpen && categoryDetail && categoryDetail.category && (
-        <div className="fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
+      {isDialogOpen && categoryDetail.category && categoryDetail.jobDetails && (
+        <div className="fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-md p-4 w-1/2">
             <h2 className="text-xl font-bold mb-2">
               Thông tin chi tiết danh mục
             </h2>
             <p>Tên danh mục: {categoryDetail.category.name}</p>
-            <p>Số công việc: {categoryDetail.jobCount}</p>
-            <p>Số ứng viên: {categoryDetail.applicantCount}</p>
-            <Button
-              className="bg-red-500 text-white"
-              onClick={() => setIsDialogOpen(false)}
-            >
-              Đóng
-            </Button>
+            <h3 className="text-lg font-bold mb-2">Danh sách công việc</h3>
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+              <thead>
+                <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">
+                  <th className="py-2 px-4 md:py-3 md:px-6 text-left">
+                    Tên công việc
+                  </th>
+                  <th className="py-2 px-4 md:py-3 md:px-6 text-left">
+                    Số ứng viên
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-medium">
+                {categoryDetail.jobDetails
+                  .slice((currentPage - 1) * 10, currentPage * 10)
+                  .map((job) => (
+                    <tr key={job.id}>
+                      <td className="py-2 px-4 md:py-3 md:px-6">
+                        {job.jobName}
+                      </td>
+                      <td className="py-2 px-4 md:py-3 md:px-6">
+                        {job.applicantCount}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            <div className="mt-4 flex justify-center">
+              {Array.from(
+                { length: Math.ceil(categoryDetail.jobDetails.length / 10) },
+                (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => setCurrentPage(index + 1)}
+                    className={`mx-1 px-3 py-1 rounded ${
+                      currentPage === index + 1
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+            <div className="mt-4">
+              <Button onClick={() => setIsDialogOpen(false)}>Đóng</Button>
+            </div>
           </div>
         </div>
       )}

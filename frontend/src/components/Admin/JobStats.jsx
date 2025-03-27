@@ -16,25 +16,34 @@ import {
 } from "recharts";
 
 //xem chi tiết công việc từng công ty đăng theo tháng và ngày và năm bằng chart
-//ẩn nút từ chối khi duyệt xong
 
 export default function JobStats() {
   const [stats, setStats] = useState({ weekly: 0, monthly: 0, yearly: 0 });
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState(new Date().getDate());
+  const [companyId, setCompanyId] = useState("");
+  const [companies, setCompanies] = useState([]);
+  const [companyName, setCompanyName] = useState("");
+  const [otherCompanyStats, setOtherCompanyStats] = useState([]);
 
   // Hàm để lấy thống kê công việc
   const fetchJobStats = async () => {
     try {
+      if (!year || !month || !day || !companyId) {
+        toast.error("Vui lòng cung cấp ngày tháng năm và công ty");
+        return;
+      }
       const res = await axios.get(
-        `${JOB_API}/stats?year=${year}&month=${month}&day=${day}`,
+        `${JOB_API}/stats/${year}/${month}/${day}/${companyId}`,
         {
           withCredentials: true,
         }
       );
       if (res.data.success) {
         setStats(res.data.stats);
+        setCompanyName(res.data.company);
+        setOtherCompanyStats(res.data.otherCompanyStats);
       }
     } catch (error) {
       console.error(error);
@@ -44,17 +53,7 @@ export default function JobStats() {
 
   useEffect(() => {
     fetchJobStats(); // Gọi hàm khi component được mount
-  }, [year, month, day]);
-
-  const createChartData = (stats) => {
-    return [
-      { name: "Tuần", uv: stats.weekly || 0 },
-      { name: "Tháng", uv: stats.monthly || 0 },
-      { name: "Năm", uv: stats.yearly || 0 },
-    ];
-  };
-
-  const data = createChartData(stats);
+  }, [year, month, day, companyId]);
 
   const handleYearChange = (e) => {
     setYear(e.target.value);
@@ -67,6 +66,28 @@ export default function JobStats() {
   const handleDayChange = (e) => {
     setDay(e.target.value);
   };
+
+  const handleCompanyIdChange = (e) => {
+    setCompanyId(e.target.value);
+  };
+
+  const fetchCompanies = async () => {
+    try {
+      const res = await axios.get(`${JOB_API}/companies`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        setCompanies(res.data.companies);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi lấy danh sách công ty");
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanies(); // Gọi hàm khi component được mount
+  }, []);
 
   return (
     <div className="container mx-auto p-6">
@@ -107,10 +128,28 @@ export default function JobStats() {
               ))}
             </select>
           </div>
+          <div>
+            {companies && companies.length > 0 ? (
+              <select value={companyId} onChange={handleCompanyIdChange}>
+                <option value="">Chọn công ty</option>
+                {companies.map((company) => (
+                  <option key={company._id} value={company._id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <p>Không có công ty nào</p>
+            )}
+          </div>
         </div>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            data={data}
+            data={[
+              { name: "Tuần", uv: stats.weekly || 0 },
+              { name: "Tháng", uv: stats.monthly || 0 },
+              { name: "Năm", uv: stats.yearly || 0 },
+            ]}
             margin={{
               top: 5,
               right: 30,
@@ -126,6 +165,34 @@ export default function JobStats() {
             <Bar dataKey="uv" fill="#8884d8" />
           </BarChart>
         </ResponsiveContainer>
+        <h2 className="text-lg font-semibold">
+          Số lượng công việc đã đăng của công ty {companyName}
+        </h2>
+        {otherCompanyStats && otherCompanyStats.length > 0 ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              data={otherCompanyStats.map((stat, index) => ({
+                name: `Công ty ${index + 1}`,
+                uv: stat,
+              }))}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis domain={[0, "dataMax"]} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="uv" fill="#82ca9d" />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <p>Không có dữ liệu công việc cho công ty khác</p>
+        )}
       </div>
     </div>
   );

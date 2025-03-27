@@ -27,6 +27,8 @@ export default function AdminJobs() {
   const [currentJobId, setCurrentJobId] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [showFullDescription, setShowFullDescription] = useState({});
+  //const [currentJobDescription, setCurrentJobDescription] = useState({});
 
   const fetchJobs = async (page) => {
     try {
@@ -199,7 +201,29 @@ export default function AdminJobs() {
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
-                      {job.description}
+                      {job.description.length > 10 ? (
+                        <div>
+                          {showFullDescription[job._id] ? (
+                            <span>{job.description}</span>
+                          ) : (
+                            <span>{job.description.substring(0, 10)}...</span>
+                          )}
+                          <Button
+                            onClick={() => {
+                              setShowFullDescription((prev) => ({
+                                ...prev,
+                                [job._id]: !prev[job._id],
+                              }));
+                            }}
+                          >
+                            {showFullDescription[job._id]
+                              ? "Ẩn bớt"
+                              : "Xem thêm"}
+                          </Button>
+                        </div>
+                      ) : (
+                        <span>{job.description}</span>
+                      )}
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {formatNumber(job.salary)} VND
@@ -261,7 +285,31 @@ export default function AdminJobs() {
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">{job.title}</td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
-                      {job.description}
+                      {job.description.length > 30 ? (
+                        <div>
+                          {showFullDescription[job._id] ? (
+                            <span>{job.description}</span>
+                          ) : (
+                            <span>{job.description.substring(0, 30)}</span>
+                          )}
+                          <br />
+                          <span
+                            onClick={() => {
+                              setShowFullDescription((prev) => ({
+                                ...prev,
+                                [job._id]: !prev[job._id],
+                              }));
+                            }}
+                            className="text-blue-500 cursor-pointer"
+                          >
+                            {showFullDescription[job._id]
+                              ? "Ẩn bớt"
+                              : "Xem thêm"}
+                          </span>
+                        </div>
+                      ) : (
+                        <span>{job.description}</span>
+                      )}
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6">
                       {formatNumber(job.salary)} VND
@@ -285,7 +333,10 @@ export default function AdminJobs() {
                     </td>
                     <td className="py-3 px-4 md:py-3 md:px-6 flex space-x-2">
                       {!job.approved && (
-                        <Button onClick={() => handleApproveJob(job._id)}>
+                        <Button
+                          onClick={() => handleApproveJob(job._id)}
+                          className="bg-green-500 text-white"
+                        >
                           Phê duyệt
                         </Button>
                       )}
