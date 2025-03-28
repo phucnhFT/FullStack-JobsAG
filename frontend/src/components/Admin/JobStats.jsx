@@ -15,10 +15,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-//xem chi tiết công việc từng công ty đăng theo tháng và ngày và năm bằng chart
-
 export default function JobStats() {
-  const [stats, setStats] = useState({ weekly: 0, monthly: 0, yearly: 0 });
+  const [stats, setStats] = useState({
+    weekly: 0,
+    monthly: 0,
+    yearly: 0,
+    total: 0,
+  });
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [day, setDay] = useState(new Date().getDate());
@@ -149,6 +152,7 @@ export default function JobStats() {
               { name: "Tuần", uv: stats.weekly || 0 },
               { name: "Tháng", uv: stats.monthly || 0 },
               { name: "Năm", uv: stats.yearly || 0 },
+              { name: "Tổng", uv: stats.total || 0 },
             ]}
             margin={{
               top: 5,

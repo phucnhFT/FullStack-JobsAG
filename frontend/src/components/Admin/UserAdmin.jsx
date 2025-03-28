@@ -70,6 +70,7 @@ export default function AdminUsers() {
     }
   };
 
+  //thêm người dùng
   const handleAddUser = async () => {
     try {
       const formData = new FormData();
@@ -105,7 +106,7 @@ export default function AdminUsers() {
       toast.error("Lỗi khi thêm người dùng");
     }
   };
-
+  //cập nhật
   const handleUpdateUser = async () => {
     if (!fullname || !email || !phone || !role) {
       toast.error("Vui lòng nhập đầy đủ các trường !");
@@ -285,7 +286,7 @@ export default function AdminUsers() {
           </Button>
         ))}
       </div>
-
+          {/* Thêm */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
@@ -381,6 +382,7 @@ export default function AdminUsers() {
                 </div>
               </div>
             </div>
+            {/* Thêm */}
             <DialogFooter>
               <Button type="button" onClick={handleAddUser}>
                 Thêm người dùng
@@ -392,7 +394,7 @@ export default function AdminUsers() {
           </form>
         </DialogContent>
       </Dialog>
-
+          {/* Cập nhật */}
       <Dialog open={isUpdateOpen} onOpenChange={setIsUpdateOpen}>
         <DialogContent>
           <DialogHeader>

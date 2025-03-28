@@ -305,12 +305,16 @@ export const getJobStats = async (req, res) => {
       company: companyId,
     });
 
+    // Thống kê toàn bộ công việc trong hệ thống
+    const totalJobs = await Job.countDocuments();
+
     return res.status(200).json({
       success: true,
       stats: {
         weekly: weeklyJobs,
         monthly: monthlyJobs,
         yearly: yearlyJobs,
+        total: totalJobs,
       },
       company: company.name,
     });
