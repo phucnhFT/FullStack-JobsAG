@@ -208,18 +208,19 @@ export default function AdminJobs() {
                           ) : (
                             <span>{job.description.substring(0, 10)}...</span>
                           )}
-                          <Button
+                          <span
                             onClick={() => {
                               setShowFullDescription((prev) => ({
                                 ...prev,
                                 [job._id]: !prev[job._id],
                               }));
                             }}
+                            className="text-blue-500 cursor-pointer"
                           >
                             {showFullDescription[job._id]
                               ? "Ẩn bớt"
                               : "Xem thêm"}
-                          </Button>
+                          </span>
                         </div>
                       ) : (
                         <span>{job.description}</span>

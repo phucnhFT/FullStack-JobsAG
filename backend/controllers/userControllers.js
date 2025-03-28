@@ -190,7 +190,7 @@ export const updateProfile = async (req, res) => {
 
     let skillsArray;
     if (skills) {
-      skillsArray = skills.split(","); //tách chuỗi skills thành 1 mảng nếu cung cấp
+      skillsArray = skills.split(/[;,. ]+/); //tách chuỗi skills thành 1 mảng nếu cung cấp
     }
     const userId = req.id; // middle
     let user = await User.findById(userId);
@@ -585,5 +585,25 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: error });
     console.log(error);
+  }
+};
+
+// Tổng số người dùng
+export const getTotalUsers = async (req, res) => {
+  try {
+    const totalApplicants = await User.countDocuments({ role: "Ứng Viên" });
+    const totalEmployers = await User.countDocuments({ role: "Nhà Tuyển Dụng" });
+
+    return res.status(200).json({
+      success: true,
+      totalApplicants,
+      totalEmployers,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Lỗi khi lấy tổng số người dùng",
+    });
   }
 };

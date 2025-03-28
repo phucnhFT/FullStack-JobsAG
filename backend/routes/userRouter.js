@@ -14,6 +14,7 @@ import {
   getUserDetail,
   addUser,
   updateUser,
+  getTotalUsers,
 } from "../controllers/userControllers.js";
 import {authenticate, isAdmin} from "../middlewares/authenticate.js";
 import { singleUpload } from "../middlewares/mutler.js";
@@ -40,6 +41,15 @@ router.route("/delete-user/:id").delete(authenticate, isAdmin, deleteUser);
 router.route("/get-detail/:id").get(authenticate, isAdmin, getUserDetail);
 router.route("/add-user").post(authenticate, singleUpload, isAdmin, addUser); 
 router.put("/update-user/:id", authenticate, singleUpload, isAdmin, updateUser);
+
+// tổng user
+router.get(
+  "/get-total-users",
+  authenticate,
+  singleUpload,
+  isAdmin,
+  getTotalUsers
+);
 
 
 export default router;

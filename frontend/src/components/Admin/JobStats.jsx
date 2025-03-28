@@ -149,7 +149,7 @@ export default function JobStats() {
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={[
-              { name: "Tuần", uv: stats.weekly || 0 },
+              { name: "Ngày", uv: stats.weekly || 0 },
               { name: "Tháng", uv: stats.monthly || 0 },
               { name: "Năm", uv: stats.yearly || 0 },
               { name: "Tổng", uv: stats.total || 0 },

@@ -34,6 +34,8 @@ export default function AdminUsers() {
   const [role, setRole] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [selectedUser, setSelectedUser] = useState({});
+   const [totalApplicants, setTotalApplicants] = useState(0);
+   const [totalEmployers, setTotalEmployers] = useState(0);
 
   const fetchUsers = async (page) => {
     try {
@@ -147,8 +149,24 @@ export default function AdminUsers() {
     }
   };
 
+  const fetchTotalUsers = async () => {
+    try {
+      const res = await axios.get(`${USER_API}/get-total-users`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        setTotalApplicants(res.data.totalApplicants);
+        setTotalEmployers(res.data.totalEmployers);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi lấy tổng số người dùng");
+    }
+  };
+
   useEffect(() => {
     fetchUsers(currentPage);
+    fetchTotalUsers();
   }, [currentPage]);
 
   const handlePageChange = (page) => {
@@ -188,6 +206,10 @@ export default function AdminUsers() {
           onChange={handleSearch}
           className="w-full md:w-1/2 py-2 pl-10 text-sm text-gray-700"
         />
+        <p class="border border-gray-400 p-2 text-center">
+          <Label>Tổng số người dùng: </Label>
+          {totalApplicants} ứng viên, {totalEmployers} nhà tuyển dụng
+        </p>
         <Button onClick={() => setIsOpen(true)}>Thêm mới</Button>
       </div>
       <div className="overflow-x-auto">
@@ -286,7 +308,7 @@ export default function AdminUsers() {
           </Button>
         ))}
       </div>
-          {/* Thêm */}
+      {/* Thêm */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
@@ -394,7 +416,7 @@ export default function AdminUsers() {
           </form>
         </DialogContent>
       </Dialog>
-          {/* Cập nhật */}
+      {/* Cập nhật */}
       <Dialog open={isUpdateOpen} onOpenChange={setIsUpdateOpen}>
         <DialogContent>
           <DialogHeader>
