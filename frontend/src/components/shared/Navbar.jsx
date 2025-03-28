@@ -86,7 +86,7 @@ export default function Navbar() {
                   <Link to="/jobs">Công việc</Link>
                 </li>
                 <li>
-                  <Link to="/browse">Trình duyệt</Link>
+                  <Link to="/browse">Tìm Kiếm</Link>
                 </li>
                 <li>
                   <Link to="/interested-companies">

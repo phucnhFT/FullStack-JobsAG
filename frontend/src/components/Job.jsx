@@ -36,6 +36,7 @@ export default function Job({ job }) {
       toast.error("Lỗi hoặc công ty đã bị xoá !!");
     }
   };
+
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -111,8 +112,11 @@ export default function Job({ job }) {
         >
           Chi tiết
         </Button>
-        <Button className="bg-[#7209b7] text-xs md:text-sm">
-          Lưu công việc
+        <Button
+          onClick={() => navigate(`/company/${job?.company?._id}`)}
+          className="bg-[#7209b7] text-xs md:text-sm"
+        >
+          Xem công ty
         </Button>
       </div>
     </div>

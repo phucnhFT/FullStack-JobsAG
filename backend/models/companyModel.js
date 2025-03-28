@@ -31,6 +31,7 @@ const companySchema = new mongoose.Schema(
       required: true,
     },
     interestedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
   },
   { timestamps: true }
 );

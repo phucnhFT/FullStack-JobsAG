@@ -22,6 +22,7 @@ import PostJob from "@/components/Employer/PostJob";
 import Applicants from "@/components/Employer/Applicants";
 import CaterogyAdmin from "@/components/Admin/CaterogyAdmin";
 import AdminUserDetail from "@/components/Admin/UserDetail";
+import CompanyDetails from "@/components/CompanyDetails";
 
 const appRouter = createBrowserRouter([
   // Ứng Viên
@@ -68,6 +69,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/company/:id",
+    element: <CompanyDetails />,
   },
 
   //ADMIN
