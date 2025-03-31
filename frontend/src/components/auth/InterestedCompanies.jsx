@@ -2,7 +2,7 @@ import Navbar from "@/components/shared/Navbar";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { USER_API } from "@/utils/constant";
 import { toast } from "sonner";
@@ -40,8 +40,8 @@ export default function InterestedCompanies() {
 
   // Gọi API để xóa công ty
   const handleRemoveCompany = async (companyId) => {
-    try {
-      dispatch(setLoading(true));
+      try {
+        dispatch(setLoading(true));
       const res = await axios.delete(
         `${USER_API}/delete-interested/${companyId}`,
         { withCredentials: true }
@@ -82,6 +82,7 @@ export default function InterestedCompanies() {
                   <div
                     key={company._id}
                     className="border border-gray-200 p-4 rounded-md"
+                    onclick
                   >
                     <Avatar>
                       <AvatarImage src={company.logo} />

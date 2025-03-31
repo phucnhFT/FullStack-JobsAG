@@ -124,7 +124,7 @@ export default function UpdateProfileDialog({ open, setOpen }) {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4">
                 <Label htmlFor="bio" className="text-right">
-                  Bio
+                  Ghi chú
                 </Label>
                 <Input
                   id="bio"

@@ -50,16 +50,16 @@ export default function CompanyDetail() {
         <div className="space-y-3">
           <div>
             <Label className="font-semibold">Mô tả:</Label>
-            <p className="text-sm text-gray-600">{company?.description}</p>
+            <p className="text-gray-600">{company?.description}</p>
           </div>
           <div>
             <Label className="font-semibold">Địa chỉ:</Label>
-            <p className="text-sm text-gray-600">{company?.location}</p>
+            <p className=" text-gray-600">{company?.location}</p>
           </div>
           <div>
             <Label className="font-semibold">Website:</Label>
             <p
-              className="text-sm text-blue-600 underline cursor-pointer"
+              className=" text-blue-600 underline cursor-pointer"
               onClick={() => window.open(company?.website, "_blank")}
             >
               {company?.website}
@@ -72,25 +72,25 @@ export default function CompanyDetail() {
               <tr className="bg-gray-100 border border-gray-300">
                 <th
                   className="py-2 px-4 text-center font-semibold border border-gray-300"
-                  style={{ width: "25%" }}
+
                 >
                   Tên công việc
                 </th>
                 <th
                   className="py-2 px-4 text-center font-semibold border border-gray-300"
-                  style={{ width: "25%" }}
+
                 >
                   Loại công việc
                 </th>
                 <th
                   className="py-2 px-4 text-center font-semibold border border-gray-300"
-                  style={{ width: "25%" }}
+
                 >
                   Mức lương
                 </th>
                 <th
                   className="py-2 px-4 text-center font-semibold border border-gray-300"
-                  style={{ width: "25%" }}
+
                 >
                   Ngày đăng tuyển
                 </th>
@@ -101,25 +101,25 @@ export default function CompanyDetail() {
                 <tr key={job._id} className="border border-gray-300">
                   <td
                     className="py-3 px-4 text-center border border-gray-300 whitespace-nowrap"
-                    style={{ width: "25%" }}
+
                   >
                     {job.title}
                   </td>
                   <td
                     className="py-3 px-4 text-center border border-gray-300"
-                    style={{ width: "25%" }}
+
                   >
                     {job.jobType}
                   </td>
                   <td
                     className="py-3 px-4 text-center border border-gray-300"
-                    style={{ width: "25%" }}
+
                   >
                     {formatNumber(job.salary)} VND
                   </td>
                   <td
                     className="py-3 px-4 text-center border border-gray-300"
-                    style={{ width: "25%" }}
+
                   >
                     {job.createdAt.slice(0, 10)}
                   </td>

@@ -33,10 +33,6 @@ export default function JobStats() {
   // Hàm để lấy thống kê công việc
   const fetchJobStats = async () => {
     try {
-      if (!year || !month || !day || !companyId) {
-        toast.error("Vui lòng cung cấp ngày tháng năm và công ty");
-        return;
-      }
       const res = await axios.get(
         `${JOB_API}/stats/${year}/${month}/${day}/${companyId}`,
         {
@@ -50,7 +46,7 @@ export default function JobStats() {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Lỗi khi lấy thống kê công việc");
+      //toast.error("Lỗi khi lấy thống kê công việc");
     }
   };
 

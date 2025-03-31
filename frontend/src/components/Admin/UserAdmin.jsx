@@ -19,10 +19,10 @@ import {
 import { Label } from "@/components/ui/label";
 
 export default function AdminUsers() {
+  const limit = 10;
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const limit = 10;
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +34,8 @@ export default function AdminUsers() {
   const [role, setRole] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [selectedUser, setSelectedUser] = useState({});
-   const [totalApplicants, setTotalApplicants] = useState(0);
-   const [totalEmployers, setTotalEmployers] = useState(0);
+  const [totalApplicants, setTotalApplicants] = useState(0);
+  const [totalEmployers, setTotalEmployers] = useState(0);
 
   const fetchUsers = async (page) => {
     try {
@@ -207,7 +207,7 @@ export default function AdminUsers() {
           className="w-full md:w-1/2 py-2 pl-10 text-sm text-gray-700"
         />
         <p class="border border-gray-400 p-2 text-center">
-          <Label>Tổng số người dùng: </Label>
+          <Label>Tổng: </Label>
           {totalApplicants} ứng viên, {totalEmployers} nhà tuyển dụng
         </p>
         <Button onClick={() => setIsOpen(true)}>Thêm mới</Button>

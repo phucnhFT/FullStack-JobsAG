@@ -16,8 +16,8 @@ import {authenticate, isAdmin} from "../middlewares/authenticate.js";
 const router = express.Router();
 
 router.route("/post").post(authenticate, postJob);
-router.route("/get-all-job").get(getALlJobs);//authenticate
-router.route("/get-job/:id").get(getJobId)//authenticate,
+router.route("/get-all-job").get(getALlJobs);
+router.route("/get-job/:id").get(getJobId),
 router.route("/get-admin-jobs").get(authenticate, getAdminJobs);
 
 //category

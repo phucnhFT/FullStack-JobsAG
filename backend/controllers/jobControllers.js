@@ -21,10 +21,10 @@ export const postJob = async (req, res) => {
       companyId,
       postDate,
       expiryDate,
-      category, // Đây là tên của category (string)
+      category, 
     } = req.body;
 
-    const userId = req.id; // Lấy userId từ req.id
+    const userId = req.id; 
 
     // Kiểm tra các trường bắt buộc
     if (
@@ -265,11 +265,11 @@ export const getJobStats = async (req, res) => {
   try {
     const { year, month, day, companyId } = req.params;
 
-    if (!year || !month || !day || !companyId) {
-      return res
-        .status(400)
-        .json({ message: "Vui lòng cung cấp ngày tháng năm và công ty" });
-    }
+    // if (!year || !month || !day || !companyId) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Vui lòng cung cấp ngày tháng năm và công ty" });
+    // }
 
     // Kiểm tra xem companyId có hợp lệ hay không
     const company = await Company.findById(companyId);

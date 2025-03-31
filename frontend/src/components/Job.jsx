@@ -89,7 +89,7 @@ export default function Job({ job }) {
           className={"text-blue-700 font-bold text-xs md:text-sm"}
           variant="ghost"
         >
-          {job?.position} Positions
+          {job?.position} Vị trí
         </Badge>
         <Badge
           className={"text-[#F83002] font-bold text-xs md:text-sm"}

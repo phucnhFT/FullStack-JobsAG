@@ -28,7 +28,6 @@ export default function AdminJobs() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState({});
-  const [currentJobDescription, setCurrentJobDescription] = useState({});
 
   const fetchJobs = async (page) => {
     try {
@@ -176,7 +175,7 @@ export default function AdminJobs() {
               <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
                 Ngày ứng tuyển
               </th>
-              <th className="py-3 px-4 md: py-3 md:px-6 text-left whitespace-nowrap">
+              <th className="py-3 px-4 md:py-3 md:px-6 text-left whitespace-nowrap">
                 Ngày hết hạn
               </th>
               <th className="py-3 px-4 md:py-3 md:px-6 text-left">
