@@ -49,11 +49,7 @@ export default function JobStats() {
       //toast.error("Lỗi khi lấy thống kê công việc");
     }
   };
-
-  useEffect(() => {
-    fetchJobStats(); // Gọi hàm khi component được mount
-  }, [year, month, day, companyId]);
-
+  
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
@@ -85,8 +81,9 @@ export default function JobStats() {
   };
 
   useEffect(() => {
+    fetchJobStats();
     fetchCompanies(); // Gọi hàm khi component được mount
-  }, []);
+  }, [year, month, day, companyId]);
 
   return (
     <div className="container mx-auto p-6">
