@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import Swal from "sweetalert2";
 
 export default function AdminJobs() {
   const [jobs, setJobs] = useState([]);
@@ -106,22 +107,28 @@ export default function AdminJobs() {
   };
 
   const handleDeleteJob = async (jobId) => {
-    const confirmDelete = window.confirm(
-      "Bạn có chắc chắn muốn xóa công việc này không?"
-    );
-    if (!confirmDelete) return;
+    const confirmDelete = await Swal.fire({
+      title: "Xóa công việc?",
+      text: "Bạn có chắc chắn muốn xóa công việc này không?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
 
-    try {
-      const res = await axios.delete(`${JOB_API}/delete-job/${jobId}`, {
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        toast.success("Công việc đã được xóa thành công");
-        fetchJobs(currentPage);
+    if (confirmDelete.isConfirmed) {
+      try {
+        const res = await axios.delete(`${JOB_API}/delete-job/${jobId}`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          toast.success("Công việc đã được xóa thành công");
+          fetchJobs(currentPage);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Lỗi khi xóa công việc.");
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Lỗi khi xóa công việc.");
     }
   };
 

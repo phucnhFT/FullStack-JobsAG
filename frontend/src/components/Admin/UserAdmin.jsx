@@ -17,6 +17,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import Swal from "sweetalert2";
 
 export default function AdminUsers() {
   const limit = 10;
@@ -54,21 +55,28 @@ export default function AdminUsers() {
   };
 
   const handleDeleteUser = async (userId) => {
-    const confirmDelete = window.confirm(
-      "Bạn có chắc chắn muốn xóa người dùng này không?"
-    );
-    if (!confirmDelete) return;
-    try {
-      const res = await axios.delete(`${USER_API}/delete-user/${userId}`, {
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        toast.success("Xóa người dùng thành công");
-        fetchUsers(currentPage);
+    const confirmDelete = await Swal.fire({
+      title: "Xóa người dùng?",
+      text: "Bạn có chắc chắn muốn xóa người dùng này không?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (confirmDelete.isConfirmed) {
+      try {
+        const res = await axios.delete(`${USER_API}/delete-user/${userId}`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          toast.success("Xóa người dùng thành công");
+          fetchUsers(currentPage);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Lỗi khi xóa người dùng");
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Lỗi khi xóa người dùng");
     }
   };
 

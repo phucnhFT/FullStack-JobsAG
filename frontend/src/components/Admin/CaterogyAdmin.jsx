@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
 import { Label } from "@/components/ui/label";
+import Swal from "sweetalert2";
 
 // xem nhóm danh mục
 
@@ -34,24 +35,31 @@ export default function AdminCategories() {
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    const confirmDelete = window.confirm(
-      "Bạn có chắc chắn muốn xóa danh mục này không?"
-    );
-    if (!confirmDelete) return;
-    try {
-      const res = await axios.delete(
-        `${CATEGORY_API}/delete-categories/${categoryId}`,
-        {
-          withCredentials: true,
+    const confirmDelete = await Swal.fire({
+      title: "Xóa danh mục?",
+      text: "Bạn có chắc chắn muốn xóa danh mục này không?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+
+    if (confirmDelete.isConfirmed) {
+      try {
+        const res = await axios.delete(
+          `${CATEGORY_API}/delete-categories/${categoryId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          toast.success("Xóa danh mục thành công");
+          fetchCategories(currentPage);
         }
-      );
-      if (res.data.success) {
-        toast.success("Xóa danh mục thành công");
-        fetchCategories(currentPage);
+      } catch (error) {
+        console.error(error);
+        toast.error("Lỗi khi xóa danh mục");
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Lỗi khi xóa danh mục");
     }
   };
 
