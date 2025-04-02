@@ -46,7 +46,6 @@ export default function JobStats() {
       }
     } catch (error) {
       console.error(error);
-      //toast.error("Lỗi khi lấy thống kê công việc");
     }
   };
   

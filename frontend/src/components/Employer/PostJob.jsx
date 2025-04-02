@@ -53,6 +53,10 @@ export default function PostJob() {
     }
   };
 
+  const jobTypeChangeHandler = (value) => {
+    setInput({ ...input, jobType: value });
+  };
+
   const submitHanlder = async (e) => {
     e.preventDefault();
     try {
@@ -136,13 +140,19 @@ export default function PostJob() {
             </div>
             <div>
               <Label>Loại công việc</Label>
-              <Input
-                type="text"
-                name="jobType"
-                value={input.jobType}
-                onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
-              />
+              <Select onValueChange={jobTypeChangeHandler}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Chọn loại công việc" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="Toàn Thời Gian">
+                      Toàn thời gian
+                    </SelectItem>
+                    <SelectItem value="Bán Thời Gian">Bán thời gian</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <Label>Danh mục</Label>

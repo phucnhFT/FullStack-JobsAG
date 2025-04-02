@@ -400,7 +400,6 @@ export const removeInterestedCompany = async (req, res) => {
   }
 };
 
-
 //xem danh sách công ty đã quan tâm
 export const getInterestedCompany = async (req, res) => {
   try {

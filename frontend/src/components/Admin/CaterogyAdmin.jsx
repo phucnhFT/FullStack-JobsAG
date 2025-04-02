@@ -8,8 +8,6 @@ import Navbar from "@/components/shared/Navbar";
 import { Label } from "@/components/ui/label";
 import Swal from "sweetalert2";
 
-// xem nhóm danh mục
-
 export default function AdminCategories() {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +16,7 @@ export default function AdminCategories() {
   const [categoryDetail, setCategoryDetail] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  //lấy danh sách 
   const fetchCategories = async (page) => {
     try {
       const res = await axios.get(`${CATEGORY_API}/get-categories`, {
