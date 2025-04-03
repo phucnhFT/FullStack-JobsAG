@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema(
     ],
     salary: {
       // lương
-      type: String,
+      type: Number,
       required: true,
     },
     experienceLevel: {

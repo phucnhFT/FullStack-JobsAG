@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
+  DialogTitle ,
   DialogContent,
   DialogHeader, 
   DialogFooter,
@@ -117,10 +118,6 @@ export default function AdminUsers() {
   };
   //cập nhật
   const handleUpdateUser = async () => {
-    if (!fullname || !email || !phone || !role) {
-      toast.error("Vui lòng nhập đầy đủ các trường !");
-      return;
-    }
     try {
       const formData = new FormData();
       formData.append("fullname", fullname);
