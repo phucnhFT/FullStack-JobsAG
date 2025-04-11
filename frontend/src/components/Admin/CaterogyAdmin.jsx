@@ -128,7 +128,7 @@ export default function AdminCategories() {
           </tbody>
         </table>
       </div>
-      <div className="pagination mt- 4">
+      <div className="pagination mt-4">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}

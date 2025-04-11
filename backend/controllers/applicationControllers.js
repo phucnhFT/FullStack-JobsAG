@@ -2,6 +2,7 @@ import { Application } from "../models/applicationModel.js";
 import { Job } from "../models/jobsModel.js";
 import { User } from "../models/userModel.js";
 import sendEmail from "../config/sendMail.js";
+
 // ứng tuyển
 export const applyJob = async (req, res) => {
   try {

@@ -17,7 +17,7 @@ import {
 
 export default function JobStats() {
   const [stats, setStats] = useState({
-    weekly: 0,
+    daily: 0,
     monthly: 0,
     yearly: 0,
     total: 0,
@@ -48,7 +48,7 @@ export default function JobStats() {
       console.error(error);
     }
   };
-  
+
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
@@ -141,7 +141,7 @@ export default function JobStats() {
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={[
-              { name: "Ngày", uv: stats.weekly || 0 },
+              { name: "Ngày", uv: stats.daily || 0 },
               { name: "Tháng", uv: stats.monthly || 0 },
               { name: "Năm", uv: stats.yearly || 0 },
               { name: "Tổng", uv: stats.total || 0 },

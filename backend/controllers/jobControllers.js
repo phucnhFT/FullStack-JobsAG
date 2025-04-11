@@ -274,20 +274,17 @@ export const getJobStats = async (req, res) => {
     // Tạo ngày tháng năm từ tham số
     const selectedDate = new Date(year, month - 1, day);
 
-    // Tính toán thời gian bắt đầu cho tuần, tháng và năm
-    const startOfWeek = new Date(
-      selectedDate.setDate(selectedDate.getDate() - selectedDate.getDay())
-    );
-    const startOfMonth = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      1
-    );
-    const startOfYear = new Date(selectedDate.getFullYear(), 0, 1);
+    // Tính toán thời gian bắt đầu cho ngày, tháng và năm
+    const startDate = new Date(year, month - 1, day);
+    const startOfMonth = new Date(year, month - 1, 1);
+    const startOfYear = new Date(year, 0, 1);
 
     // Thống kê số lượng công việc
-    const weeklyJobs = await Job.countDocuments({
-      postDate: { $gte: startOfWeek },
+    const dailyJobs = await Job.countDocuments({
+      postDate: {
+        $gte: startDate,
+        $lt: new Date(startDate.getTime() + 86400000),
+      },
       company: companyId,
     });
     const monthlyJobs = await Job.countDocuments({
@@ -305,7 +302,7 @@ export const getJobStats = async (req, res) => {
     return res.status(200).json({
       success: true,
       stats: {
-        weekly: weeklyJobs,
+        daily: dailyJobs,
         monthly: monthlyJobs,
         yearly: yearlyJobs,
         total: totalJobs,
