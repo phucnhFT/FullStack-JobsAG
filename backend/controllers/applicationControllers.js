@@ -1,7 +1,7 @@
 import { Application } from "../models/applicationModel.js";
 import { Job } from "../models/jobsModel.js";
 import { User } from "../models/userModel.js";
-import sendEmail from "../config/sendMail.js";
+import { sendEmail } from "../config/sendMail.js";
 
 // ứng tuyển
 export const applyJob = async (req, res) => {
@@ -88,12 +88,10 @@ export const getApplyJob = async (req, res) => {
         },
       });
     if (!application) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "Không tìm thấy đơn ứng tuyển của bạn!",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "Không tìm thấy đơn ứng tuyển của bạn!",
+      });
     }
     return res.status(200).json({
       success: true,
@@ -108,7 +106,7 @@ export const getApplyJob = async (req, res) => {
 // nhà tuyển dụng xem có bao nhiêu người đã tuyển dụng
 export const getApplyCant = async (req, res) => {
   try {
-    const jobId = req.params.id
+    const jobId = req.params.id;
     const job = await Job.findById(jobId).populate({
       path: "applications",
       options: { sort: { createdAt: -1 } },
@@ -117,7 +115,7 @@ export const getApplyCant = async (req, res) => {
       },
     });
 
-    if(!job) {
+    if (!job) {
       return res
         .status(404)
         .json({ success: false, message: "Công việc không tồn tại" });
@@ -125,9 +123,11 @@ export const getApplyCant = async (req, res) => {
     return res.status(200).json({ success: true, job });
   } catch (e) {
     console.log(e);
-    return res.status(500).json({ message: "Lỗi khi xem danh sách ứng tuyển!" });
+    return res
+      .status(500)
+      .json({ message: "Lỗi khi xem danh sách ứng tuyển!" });
   }
-}
+};
 
 //cập nhật trạng thái ứng tuyển
 export const updateStatus = async (req, res) => {
@@ -141,7 +141,7 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    // tìm đơn ứng tuyển theo id 
+    // tìm đơn ứng tuyển theo id
     const application = await Application.findOne({ _id: applicationId });
     if (!application) {
       return res.status(404).json({
@@ -150,7 +150,7 @@ export const updateStatus = async (req, res) => {
       });
     }
 
-    // cập nhật trạng thái 
+    // cập nhật trạng thái
     application.status = status.toLowerCase();
     await application.save();
 
@@ -158,12 +158,8 @@ export const updateStatus = async (req, res) => {
       success: true,
       message: "Cập nhật trạng thái thành công !",
     });
-    
   } catch (e) {
     console.log(e);
-    return res
-      .status(500)
-      .json({ message: "Lỗi khi cập nhật trạng thái !" });
+    return res.status(500).json({ message: "Lỗi khi cập nhật trạng thái !" });
   }
 };
-

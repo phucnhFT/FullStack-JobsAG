@@ -2,8 +2,8 @@ import { Job } from "../models/jobsModel.js";
 import { User } from "../models/userModel.js";
 import { Company } from "../models/companyModel.js";
 import { Category } from "../models/categoryModel.js";
-import sendEmail from "../config/sendMail.js";
-import schedule from "node-schedule"; 
+import { sendEmail } from "../config/sendMail.js";
+import schedule from "node-schedule";
 import mongoose from "mongoose";
 
 // Nhà tuyển dụng đăng tin việc làm
@@ -21,10 +21,10 @@ export const postJob = async (req, res) => {
       companyId,
       postDate,
       expiryDate,
-      category, 
+      category,
     } = req.body;
 
-    const userId = req.id; 
+    const userId = req.id;
 
     // Kiểm tra các trường bắt buộc
     if (
@@ -161,7 +161,7 @@ export const getJobId = async (req, res) => {
         message: "Công việc không tồn tại",
       });
     }
-    //kiểm tra state hết hạn của công việc -> trả về công việc với trạng thái hết hạn 
+    //kiểm tra state hết hạn của công việc -> trả về công việc với trạng thái hết hạn
     const isExpired = new Date(job.expiryDate) < new Date();
     return res.status(200).json({
       job: { ...job.toObject(), isExpired },
@@ -187,7 +187,7 @@ export const getAdminJobs = async (req, res) => {
     const formattedJobs = jobs.map((job) => {
       return {
         ...job.toObject(),
-        isExpired: new Date(job.expiryDate) < currentDate, // thêm trạng thái hết hạn 
+        isExpired: new Date(job.expiryDate) < currentDate, // thêm trạng thái hết hạn
       };
     });
 
@@ -218,7 +218,8 @@ export const handleJobApproval = async (req, res) => {
       });
     }
 
-    if (action === "approve") { // Cập nhật trạng thái phê duyệt
+    if (action === "approve") {
+      // Cập nhật trạng thái phê duyệt
       job.approved = true; // Đặt trạng thái phê duyệt
       job.rejectionReason = null; // Đặt lý do từ chối thành null
       await job.save();
@@ -231,7 +232,8 @@ export const handleJobApproval = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: "Công việc đã được phê duyệt và thông báo đã được gửi đến nhà tuyển dụng.",
+        message:
+          "Công việc đã được phê duyệt và thông báo đã được gửi đến nhà tuyển dụng.",
       });
     } else if (action === "reject") {
       // Cập nhật trạng thái từ chối
@@ -247,12 +249,14 @@ export const handleJobApproval = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: "Công việc đã bị từ chối và thông báo đã được gửi đến nhà tuyển dụng.",
+        message:
+          "Công việc đã bị từ chối và thông báo đã được gửi đến nhà tuyển dụng.",
       });
     } else {
       return res.status(400).json({
         success: false,
-        message: "Hành động không hợp lệ. Vui lòng sử dụng 'approve' hoặc 'reject'.",
+        message:
+          "Hành động không hợp lệ. Vui lòng sử dụng 'approve' hoặc 'reject'.",
       });
     }
   } catch (error) {
@@ -315,7 +319,6 @@ export const getJobStats = async (req, res) => {
   }
 };
 
-
 export const getAllJobsForAdmin = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; // Trang hiện tại
@@ -366,7 +369,7 @@ export const deleteJob = async (req, res) => {
 // Lọc công việc theo danh mục
 export const getJobsByCategory = async (req, res) => {
   try {
-    const { category } = req.query; 
+    const { category } = req.query;
 
     // check xem category có hợp lệ không
     if (!category || !mongoose.Types.ObjectId.isValid(category)) {
@@ -407,4 +410,3 @@ export const getCompanies = async (req, res) => {
     return res.status(500).json({ message: "Lỗi khi lấy danh sách công ty" });
   }
 };
-

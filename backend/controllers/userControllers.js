@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../config/datauri.js";
 import cloudinary from "../config/cloudinary.js";
-import sendEmail from "../config/sendMail.js";
+import { sendResetPasswordEmail } from "../config/sendMail.js";
 
 //tạo tài khoản
 export const register = async (req, res) => {
@@ -267,15 +267,13 @@ export const forgotPassword = async (req, res) => {
     );
 
     const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-    const emailText = `Vui lòng nhấn vào liên kết sau để đặt lại mật khẩu: \n\n ${resetLink}`;
+    await sendResetPasswordEmail(user.email, user.name, resetLink);
 
-    // Gửi email
-    await sendEmail(user.email, "Khôi phục mật khẩu", emailText);
-    console.log("Reset password email sent:", resetLink);
     return res
       .status(200)
       .json({ success: true, message: "Email khôi phục đã được gửi!" });
   } catch (err) {
+    console.log(err);
     return res
       .status(500)
       .json({ message: "Lỗi khi gửi email, vui lòng thử lại sau" });
