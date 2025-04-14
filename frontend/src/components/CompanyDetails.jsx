@@ -4,16 +4,16 @@ import Navbar from "@/components/shared/Navbar";
 import axios from "axios";
 import { COMPANY_API, USER_API } from "@/utils/constant";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import bannerCompany from "../assets/bannerCompany.webp";
 
 export default function CompanyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [company, setCompany] = useState({});
-  const [jobs, setJobs] = useState([]); 
+  const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
     const fetchCompany = async () => {
@@ -30,33 +30,56 @@ export default function CompanyDetail() {
     fetchCompany();
   }, [id]);
 
+  const formatNumber = (num) =>
+    num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   if (loading) {
     return <div className="text-center py-5">Loading...</div>;
   }
 
-  const formatNumber = (num) =>
-    num?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
   return (
     <>
       <Navbar />
       <div className="max-w-6xl mx-auto p-6 bg-white">
-        {/* bìa */}
-        <div className="bg-gray-700 h-40 w-full rounded-lg flex items-center justify-center relative">
-          <div className="absolute left-8 bottom-[-30px] bg-white p-2 rounded shadow">
+        <div className="max-w-6xl mx-auto p-6">
+          {/* thông tin trang bìa công ty  */}
+          <div className="relative h-56 w-full rounded-lg overflow-hidden md:h-64 lg:h-80">
             <img
-              src={company?.logo}
-              alt="logo"
-              className="w-20 h-20 object-contain"
+              src={bannerCompany}
+              alt="Banner"
+              className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0d1b2a]/80 via-green-500/70 to-[#e0ffe0]/60 opacity-90" />
+
+            {/* Container cho nội dung hiển thị trên banner */}
+            <div className="absolute bottom-4 left-8 right-8 flex items-start justify-between md:bottom-6 lg:bottom-8">
+              {/* Logo + thông tin công ty */}
+              <div className="flex items-start space-x-4 md:space-x-6 lg:space-x-8">
+                <div className="bg-white p-1 rounded-md shadow-md w-20 h-20 flex items-center justify-center md:w-24 lg:w-28">
+                  <img
+                    src={company?.logo}
+                    alt="Logo"
+                    className="w-16 h-16 object-contain md:w-20 lg:w-24"
+                  />
+                </div>
+                <div className="text-white">
+                  <h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl">
+                    {company?.name}
+                  </h1>
+                  <div className="flex flex-wrap items-center gap-2 mt-1 text-sm md:text-base lg:text-lg">
+                    <span className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs font-semibold">
+                      Công ty chuyên nghiệp
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <h1 className="text-white text-2xl font-semibold">{company?.name}</h1>
         </div>
 
-        {/* thông tin */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-          {/* side trái */}
+        {/* Thông tin */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
+          {/* column trái */}
           <div className="md:col-span-2 space-y-4">
             <div className="bg-gray-100 p-4 rounded-lg">
               <h2 className="font-bold text-lg mb-2">Giới thiệu công ty</h2>
@@ -96,7 +119,7 @@ export default function CompanyDetail() {
             </div>
           </div>
 
-          {/* side phải */}
+          {/* column phải */}
           <div className="space-y-4">
             {/* Liên hệ */}
             <div className="bg-gray-100 p-4 rounded-lg">
