@@ -107,7 +107,7 @@ useEffect(() => {
               value={input.phoneNumber}
               name="phoneNumber"
               onChange={handlerInputChange}
-              placeholder="0123456789"
+              placeholder="Số điện thoại"
             />
           </div>
           <div className="my-2">

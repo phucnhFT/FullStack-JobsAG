@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import Navbar from "@/components/shared/Navbar";
 import axios from "axios";
-import { COMPANY_API, USER_API } from "@/utils/constant";
+import { COMPANY_API } from "@/utils/constant";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import bannerCompany from "../assets/bannerCompany.webp";
@@ -40,9 +40,10 @@ export default function CompanyDetail() {
   return (
     <>
       <Navbar />
-      <div className="max-w-6xl mx-auto p-6 bg-white">
-        <div className="max-w-6xl mx-auto p-6">
-          {/* thông tin trang bìa công ty  */}
+      <div className="max-w-6xl mx-auto p-6">
+        {/* Thẻ bọc toàn bộ phần nội dung chi tiết công ty */}
+        <div className="border border-gray-300 rounded-lg shadow-lg bg-white p-6">
+          {/* Banner công ty */}
           <div className="relative h-56 w-full rounded-lg overflow-hidden md:h-64 lg:h-80">
             <img
               src={bannerCompany}
@@ -51,9 +52,7 @@ export default function CompanyDetail() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0d1b2a]/80 via-green-500/70 to-[#e0ffe0]/60 opacity-90" />
 
-            {/* Container cho nội dung hiển thị trên banner */}
             <div className="absolute bottom-4 left-8 right-8 flex items-start justify-between md:bottom-6 lg:bottom-8">
-              {/* Logo + thông tin công ty */}
               <div className="flex items-start space-x-4 md:space-x-6 lg:space-x-8">
                 <div className="bg-white p-1 rounded-md shadow-md w-20 h-20 flex items-center justify-center md:w-24 lg:w-28">
                   <img
@@ -67,7 +66,7 @@ export default function CompanyDetail() {
                     {company?.name}
                   </h1>
                   <div className="flex flex-wrap items-center gap-2 mt-1 text-sm md:text-base lg:text-lg">
-                    <span className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs font-semibold">
+                    <span className="bg-yellow-300 text-red-500 px-2 py-0.5 rounded text-xs font-semibold">
                       Công ty chuyên nghiệp
                     </span>
                   </div>
@@ -75,100 +74,98 @@ export default function CompanyDetail() {
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Thông tin */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
-          {/* column trái */}
-          <div className="md:col-span-2 space-y-4">
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h2 className="font-bold text-lg mb-2">Giới thiệu công ty</h2>
-              <p className="text-gray-700">{company?.description}</p>
+          {/* Nội dung chi tiết */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
+            {/* Cột trái */}
+            <div className="md:col-span-2 space-y-4">
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <h2 className="font-bold text-lg mb-2">Giới thiệu công ty</h2>
+                <p className="text-gray-700">{company?.description}</p>
+              </div>
+
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <h2 className="font-bold text-lg mb-2">Tuyển dụng</h2>
+                <div className="space-y-4">
+                  {jobs.map((job) => (
+                    <div
+                      key={job._id}
+                      className="border border-gray-300 p-4 rounded-md flex flex-col md:flex-row justify-between items-start md:items-center"
+                    >
+                      <div>
+                        <h3 className="font-semibold text-green-700">
+                          {job.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          {job.jobType} • {job.createdAt.slice(0, 10)}
+                        </p>
+                      </div>
+                      <div className="mt-2 md:mt-0">
+                        <span className="text-blue-600 font-semibold">
+                          {formatNumber(job.salary)} VND
+                        </span>
+                        <Button
+                          className="ml-4 text-white text-sm"
+                          onClick={() => navigate(`/description/${job._id}`)}
+                        >
+                          Chi tiết công việc
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h2 className="font-bold text-lg mb-2">Tuyển dụng</h2>
-              <div className="space-y-4">
-                {jobs.map((job) => (
-                  <div
-                    key={job._id}
-                    className="border border-gray-300 p-4 rounded-md flex flex-col md:flex-row justify-between items-start md:items-center"
-                  >
-                    <div>
-                      <h3 className="font-semibold text-green-700">
-                        {job.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        {job.jobType} • {job.createdAt.slice(0, 10)}
-                      </p>
-                    </div>
-                    <div className="mt-2 md:mt-0">
-                      <span className="text-blue-600 font-semibold">
-                        {formatNumber(job.salary)} VND
-                      </span>
-                      <Button
-                        className="ml-4 text-white text-sm"
-                        onClick={() => navigate(`/description/${job._id}`)}
-                      >
-                        Chi tiết công việc
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+            {/* Cột phải */}
+            <div className="space-y-4">
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <h2 className="font-bold text-lg mb-2">Thông tin liên hệ</h2>
+                <p className="text-gray-700">{company?.location}</p>
+                <p
+                  className="text-blue-600 underline break-words mt-2 cursor-pointer"
+                  onClick={() => window.open(company?.website, "_blank")}
+                >
+                  {company?.website}
+                </p>
+              </div>
+
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <h2 className="font-bold text-lg mb-2">Thông tin công ty</h2>
+                <p className="text-gray-700">
+                  👥 Nhân viên:{" "}
+                  <span className="font-semibold">
+                    {formatNumber(company?.employeeCount || 0)}
+                  </span>
+                </p>
+              </div>
+
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <h2 className="font-bold text-lg mb-2">Xem bản đồ</h2>
+                <iframe
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                    company?.location
+                  )}&z=15&output=embed`}
+                  width="100%"
+                  height="200"
+                  className="rounded-lg border"
+                  allowFullScreen=""
+                  loading="lazy"
+                  title="Google Map"
+                ></iframe>
               </div>
             </div>
           </div>
 
-          {/* column phải */}
-          <div className="space-y-4">
-            {/* Liên hệ */}
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h2 className="font-bold text-lg mb-2">Thông tin liên hệ</h2>
-              <p className="text-gray-700">{company?.location}</p>
-              <p
-                className="text-blue-600 underline break-words mt-2 cursor-pointer"
-                onClick={() => window.open(company?.website, "_blank")}
-              >
-                {company?.website}
-              </p>
-            </div>
-
-            {/* Thông tin mở rộng */}
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h2 className="font-bold text-lg mb-2">Thông tin công ty</h2>
-              <p className="text-gray-700">
-                👥 Nhân viên:{" "}
-                <span className="font-semibold">
-                  {formatNumber(company?.employeeCount || 0)}
-                </span>
-              </p>
-            </div>
-
-            {/* Bản đồ */}
-            <div className="bg-gray-100 p-4 rounded-lg">
-              <h2 className="font-bold text-lg mb-2">Xem bản đồ</h2>
-              <iframe
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                  company?.location
-                )}&z=15&output=embed`}
-                width="100%"
-                height="200"
-                className="rounded-lg border"
-                allowFullScreen=""
-                loading="lazy"
-                title="Google Map"
-              ></iframe>
-            </div>
+          {/* Nút quay lại */}
+          <div className="flex justify-center mt-8">
+            <Button
+              className="text-white px-5 py-2 text-sm rounded-lg shadow-md"
+              onClick={() => window.history.back()}
+            >
+              Quay lại
+            </Button>
           </div>
-        </div>
-
-        <div className="flex justify-center mt-8">
-          <Button
-            className="text-white px-5 py-2 text-sm rounded-lg shadow-md"
-            onClick={() => window.history.back()}
-          >
-            Quay lại
-          </Button>
         </div>
       </div>
     </>
