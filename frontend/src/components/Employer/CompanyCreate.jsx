@@ -13,13 +13,14 @@ import { toast } from "sonner";
 export default function CompanyCreate() {
   const navigate = useNavigate();
   const [companyName, setCompanyName] = useState("");
+  const [employeeCount, setEmployeeCount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
   const registerNewCompany = async () => {
-    if (!companyName.trim()) {
-      setError("Tên công ty không được để trống");
+    if (!companyName.trim() || !employeeCount.trim()) {
+      setError("Tên công ty và số lượng nhân viên không được để trống");
       return;
     }
 
@@ -29,7 +30,7 @@ export default function CompanyCreate() {
     try {
       const res = await axios.post(
         `${COMPANY_API}/create`,
-        { companyName },
+        { companyName, employeeCount: parseInt(employeeCount) },
         {
           headers: {
             "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export default function CompanyCreate() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="my-10">
           <h1 className="font-bold text-2xl sm:text-3xl">
-            Tên công ty của bạn
+            Thông tin công ty của bạn
           </h1>
           <p className="text-gray-500 mt-2">
             Bạn muốn đặt tên công ty là gì? Bạn có thể thay đổi sau.
@@ -73,6 +74,15 @@ export default function CompanyCreate() {
             placeholder="JobAG, ABC etc..."
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
+          />
+          <Label htmlFor="employeeCount">Số lượng nhân viên</Label>
+          <Input
+            id="employeeCount"
+            type="number"
+            className="w-full"
+            placeholder="Số lượng nhân viên"
+            value={employeeCount}
+            onChange={(e) => setEmployeeCount(e.target.value)}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>

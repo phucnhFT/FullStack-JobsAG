@@ -36,8 +36,6 @@ const authenticate = async (req, res, next) => {
     res.status(404).json({ message: err.message });
   }
 };
-
-
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === "Admin") {
     next();

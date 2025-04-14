@@ -401,6 +401,7 @@ export const getJobsByCategory = async (req, res) => {
   }
 };
 
+//xem danh sách công ty 
 export const getCompanies = async (req, res) => {
   try {
     const companies = await Company.find();

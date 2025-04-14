@@ -16,7 +16,7 @@ export default function AdminCategories() {
   const [categoryDetail, setCategoryDetail] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  //lấy danh sách 
+  //lấy danh sách
   const fetchCategories = async (page) => {
     try {
       const res = await axios.get(`${CATEGORY_API}/get-categories`, {
@@ -157,7 +157,7 @@ export default function AdminCategories() {
                 <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">
                   <th className="py-2 px-4 md:py-3 md:px-6 text-left">
                     Tên công việc
-                  </th> 
+                  </th>
                   <th className="py-2 px-4 md:py-3 md:px-6 text-left">
                     Số ứng viên
                   </th>

@@ -6,11 +6,11 @@ import cloudinary from "../config/cloudinary.js";
 // đăng ký
 export const createCompany = async (req, res) => {
   try {
-    const { companyName } = req.body;
-    if (!companyName) {
+    const { companyName, employeeCount } = req.body;
+    if (!companyName || !employeeCount) {
       return res.status(400).json({
         success: false,
-        message: "Vui lòng nhập tên Công ty !",
+        message: "Vui lòng nhập tên Công ty và số lượng nhân viên!",
       });
     }
     let company = await Company.findOne({ name: companyName });
@@ -23,6 +23,7 @@ export const createCompany = async (req, res) => {
     company = await Company.create({
       name: companyName,
       userId: req.id,
+      employeeCount,
     });
 
     return res.status(201).json({
@@ -38,6 +39,7 @@ export const createCompany = async (req, res) => {
     });
   }
 };
+
 
 // lấy danh sách công ty mà user(Nhà tuyển Dụng) đã đăng ký
 export const getCompany = async (req, res) => {
@@ -91,14 +93,14 @@ export const getCompanyId = async (req, res) => {
 // chỉnh sửa thông tin
 export const updateCompany = async (req, res) => {
   try {
-    const { name, description, website, location } = req.body;
+    const { name, description, website, location, employeeCount } = req.body;
 
     const file = req.file;
     const fileUri = getDataUri(file);
     const cloudResponse = await cloudinary.uploader.upload(fileUri);
     const logo = cloudResponse.secure_url;
 
-    const updateData = { name, description, website, location, logo };
+    const updateData = { name, description, website, location, logo, employeeCount };
 
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
@@ -129,6 +131,7 @@ export const getCompanyDetailAndJobs = async (req, res) => {
   try {
     const companyId = req.params.id;
     const company = await Company.findById(companyId);
+
     if (!company) {
       return res.status(404).json({
         success: false,
@@ -137,11 +140,11 @@ export const getCompanyDetailAndJobs = async (req, res) => {
     }
 
     const jobs = await Job.find({ company: companyId });
-    if (!jobs || jobs.length === 0) {
-      company.jobs = "Không có công việc được đăng tuyển bởi công ty này";
-    } else {
-      company.jobs = jobs;
-    }
+
+    const companyJobs =
+      !jobs || jobs.length === 0
+        ? "Không có công việc được đăng tuyển bởi công ty này"
+        : jobs;
 
     const companyDetail = {
       name: company.name,
@@ -149,18 +152,19 @@ export const getCompanyDetailAndJobs = async (req, res) => {
       location: company.location,
       website: company.website,
       description: company.description,
+      employeeCount: company.employeeCount,
     };
 
     return res.status(200).json({
       success: true,
       companyDetail,
-      jobs: company.jobs,
+      jobs: companyJobs,
     });
   } catch (e) {
-    console.log(e);
+    console.log("Lỗi khi lấy chi tiết công ty:", e);
     return res.status(500).json({
       success: false,
-      message: "lỗi xem chi tiết công ty và danh sách công việc",
+      message: "Lỗi xem chi tiết công ty và danh sách công việc.",
     });
   }
 };

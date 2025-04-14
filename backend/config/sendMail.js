@@ -30,7 +30,7 @@ const sendEmail = async (to, subject, text, html) => {
 const sendResetPasswordEmail = async (to, link) => {
   const user = await User.findOne({ email: to });
   const name = user.fullname;
-  const subject = "Reset Mật Khẩu";
+  const subject = "JobsAG gửi bạn yêu cầu tạo mật khẩu mới";
   const text = `Xin chào ${name},\n\nChúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn. Để tiếp tục quá trình tạo mật khẩu mới, vui lòng làm theo các bước sau:\n\nBước 1: Nhấp vào liên kết dưới đây để reset mật khẩu của bạn:\n${link}\n\nBước 2: Nhập địa chỉ email của bạn và mật khẩu mới vào trang reset mật khẩu.\n\nBước 3: Nhấp vào nút "Reset Mật Khẩu" để hoàn tất quá trình.\n\nNếu bạn không yêu cầu reset mật khẩu, vui lòng bỏ qua email này.`;
   const html = `
     <div style="width: 600px; margin: 40px auto; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">

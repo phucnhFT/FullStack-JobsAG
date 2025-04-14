@@ -30,6 +30,11 @@ const companySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    employeeCount: {
+      // số lượng nhân viên
+      type: Number,
+      default: 0,
+    },
     interestedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
   },
