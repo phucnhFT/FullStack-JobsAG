@@ -73,58 +73,64 @@ export default function InterestedCompanies() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center mx-auto max-w-7xl">
-        <h1 className="font-medium text-xl mt-8">Danh sách công ty quan tâm</h1>
-        {loading ? (
-          <div className="flex justify-center items-center h-96">
-            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-            Đang tải dữ liệu...
-          </div>
-        ) : (
-          <div className="w-full my-10">
-            {interestedCompanies.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {interestedCompanies.map((company) => (
-                  <div
-                    key={company._id}
-                    className="border border-gray-200 p-4 rounded-md"
-                  >
-                    <Avatar>
-                      <AvatarImage src={company.logo} />
-                    </Avatar>
-                    <h2 className="font-medium text-lg mt-2">{company.name}</h2>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {expandedItems[company._id]
-                        ? company.description
-                        : `${company.description?.slice(0, 100)}...`}
-                    </p>
-                    {company.description?.length > 100 && (
-                      <button
-                        onClick={() => toggleExpand(company._id)}
-                        className="text-blue-600 text-sm mt-1"
-                      >
-                        {expandedItems[company._id] ? "Thu gọn" : "Xem thêm"}
-                      </button>
-                    )}
-                    <div className="flex justify-between items-center mt-4">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleRemoveCompany(company._id)}
-                      >
-                        Xóa
-                      </Button>
+      <div className="max-w-6xl mx-auto border border-gray-300 rounded-lg shadow-lg bg-white p-6 mt-4">
+        <div className="flex flex-col items-center mx-auto max-w-7xl">
+          <h1 className="font-medium text-xl mt-8">
+            Danh sách công ty quan tâm
+          </h1>
+          {loading ? (
+            <div className="flex justify-center items-center h-96">
+              <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+              Đang tải dữ liệu...
+            </div>
+          ) : (
+            <div className="w-full my-10">
+              {interestedCompanies.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {interestedCompanies.map((company) => (
+                    <div
+                      key={company._id}
+                      className="border border-gray-200 p-4 rounded-md"
+                    >
+                      <Avatar>
+                        <AvatarImage src={company.logo} />
+                      </Avatar>
+                      <h2 className="font-medium text-lg mt-2">
+                        {company.name}
+                      </h2>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {expandedItems[company._id]
+                          ? company.description
+                          : `${company.description?.slice(0, 100)}...`}
+                      </p>
+                      {company.description?.length > 100 && (
+                        <button
+                          onClick={() => toggleExpand(company._id)}
+                          className="text-blue-600 text-sm mt-1"
+                        >
+                          {expandedItems[company._id] ? "Thu gọn" : "Xem thêm"}
+                        </button>
+                      )}
+                      <div className="flex justify-between items-center mt-4">
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleRemoveCompany(company._id)}
+                        >
+                          Xóa
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-center text-gray-600 mt-10">
-                Bạn chưa quan tâm công ty nào.
-              </p>
-            )}
-          </div>
-        )}
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-600 mt-10">
+                  Bạn chưa theo dõi công ty nào.
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
