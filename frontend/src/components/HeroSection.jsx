@@ -10,15 +10,15 @@ export default function HeroSection() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const HandlerSearchJob = () => {
-    dispatch(setSearchedQuery(query));
-    navigate("/browse");
-  };
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      HandlerSearchJob();
-    }
-  };
+  // const HandlerSearchJob = () => {
+  //   dispatch(setSearchedQuery(query));
+  //   navigate("/browse");
+  // };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Enter") {
+  //     HandlerSearchJob();
+  //   }
+  // };
   return (
     <div className="text-center">
       <div className="flex flex-col gap-5 my-10 px-4">
@@ -32,7 +32,7 @@ export default function HeroSection() {
         <p className="text-sm md:text-base">
           Tìm kiếm và nộp đơn cho công việc phù hợp nhất với bạn
         </p>
-        <div className="flex w-full md:w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
+        {/* <div className="flex w-full md:w-[40%] shadow-lg border border-gray-200 pl-3 rounded-full items-center gap-4 mx-auto">
           <input
             type="text"
             placeholder="tìm kiếm công việc"
@@ -46,7 +46,7 @@ export default function HeroSection() {
           >
             <Search className="w-5 h-5" />
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
