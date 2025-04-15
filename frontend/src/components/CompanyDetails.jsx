@@ -14,6 +14,7 @@ export default function CompanyDetail() {
   const [company, setCompany] = useState({});
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showMore, setShowMore] = useState(false); // Thêm state xem thêm
 
   useEffect(() => {
     const fetchCompany = async () => {
@@ -80,7 +81,21 @@ export default function CompanyDetail() {
             <div className="md:col-span-2 space-y-4">
               <div className="bg-gray-100 p-4 rounded-lg">
                 <h2 className="font-bold text-lg mb-2">Giới thiệu công ty</h2>
-                <p className="text-gray-700">{company?.description}</p>
+                <p className="text-gray-700 whitespace-pre-line">
+                  {showMore
+                    ? company?.description
+                    : company?.description?.slice(0, 300) +
+                      (company?.description?.length > 300 ? "..." : "")}
+                </p>
+
+                {company?.description?.length > 300 && (
+                  <button
+                    className="mt-2 text-green-600 font-semibold flex items-center"
+                    onClick={() => setShowMore(!showMore)}
+                  >
+                    {showMore ? "Thu gọn ▲" : "Xem thêm ▼"}
+                  </button>
+                )}
               </div>
 
               <div className="bg-gray-100 p-4 rounded-lg">
@@ -121,8 +136,9 @@ export default function CompanyDetail() {
               <div className="bg-gray-100 p-4 rounded-lg">
                 <h2 className="font-bold text-lg mb-2">Thông tin liên hệ</h2>
                 <p className="text-gray-700">{company?.location}</p>
+                <h2 className="font-bold text-lg mt-2">Website: </h2>
                 <p
-                  className="text-blue-600 underline break-words mt-2 cursor-pointer"
+                  className="text-blue-600 underline break-words cursor-pointer"
                   onClick={() => window.open(company?.website, "_blank")}
                 >
                   {company?.website}

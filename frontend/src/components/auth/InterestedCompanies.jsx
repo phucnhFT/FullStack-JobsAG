@@ -1,8 +1,7 @@
 import Navbar from "@/components/shared/Navbar";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { USER_API } from "@/utils/constant";
 import { toast } from "sonner";
@@ -18,7 +17,15 @@ export default function InterestedCompanies() {
   const { loading, interestedCompanies } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
-  // Gọi API để lấy danh sách công ty quan tâm
+  const [expandedItems, setExpandedItems] = useState({});
+
+  const toggleExpand = (companyId) => {
+    setExpandedItems((prev) => ({
+      ...prev,
+      [companyId]: !prev[companyId],
+    }));
+  };
+
   const fetchCompanies = async () => {
     try {
       dispatch(setLoading(true));
@@ -38,10 +45,9 @@ export default function InterestedCompanies() {
     }
   };
 
-  // Gọi API để xóa công ty
   const handleRemoveCompany = async (companyId) => {
-      try {
-        dispatch(setLoading(true));
+    try {
+      dispatch(setLoading(true));
       const res = await axios.delete(
         `${USER_API}/delete-interested/${companyId}`,
         { withCredentials: true }
@@ -82,17 +88,24 @@ export default function InterestedCompanies() {
                   <div
                     key={company._id}
                     className="border border-gray-200 p-4 rounded-md"
-                    onclick
                   >
                     <Avatar>
                       <AvatarImage src={company.logo} />
                     </Avatar>
-                    <h2 className="font-medium text-lg">
-                      {company.name}  
-                    </h2>
-                    <p className="text-sm text-gray-600">
-                      {company?.description}
+                    <h2 className="font-medium text-lg mt-2">{company.name}</h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {expandedItems[company._id]
+                        ? company.description
+                        : `${company.description?.slice(0, 100)}...`}
                     </p>
+                    {company.description?.length > 100 && (
+                      <button
+                        onClick={() => toggleExpand(company._id)}
+                        className="text-blue-600 text-sm mt-1"
+                      >
+                        {expandedItems[company._id] ? "Thu gọn" : "Xem thêm"}
+                      </button>
+                    )}
                     <div className="flex justify-between items-center mt-4">
                       <Button
                         variant="destructive"
