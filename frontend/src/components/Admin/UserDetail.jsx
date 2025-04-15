@@ -3,7 +3,6 @@ import axios from "axios";
 import { USER_API } from "@/utils/constant";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useParams } from "react-router-dom";
@@ -31,38 +30,53 @@ export default function AdminUserDetail() {
   };
 
   useEffect(() => {
-    if (!userId) {
-      toast.error("Lỗi khi lấy thông tin người dùng");
-      return;
-    }
     fetchUser();
   }, []);
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <h1 className="text-2xl font-bold mb-4 mt-6 md:mt-10 text-center">
-        Thông tin người dùng
-      </h1>
-      <div className="flex flex-col md:flex-row justify-center items-center">
-        <div className="w-full md:w-1/2">
-          <div className="bg-white shadow-md rounded-lg p-4">
-            <Avatar className="cursor-pointer size-40 mx-auto">
-              <AvatarImage src={user?.profile?.profilePhoto} alt="@shadcn" />
-            </Avatar>
-            <h2 className="text-lg font-bold mb-2">Họ & Tên:</h2>
-            <p className="text-gray-600 my-2">{user.fullname}</p>
-            <h2 className="text-lg font-bold mb-2">Email:</h2>
-            <p className="text-gray-600 my-2">{user.email}</p>
-            <h2 className="text-lg font-bold mb-2">Role:</h2>
-            <p className="text-gray-600 my-2">{user.role}</p>
-            <h2 className="text-lg font-bold mb-2">Số điện thoại:</h2>
-            <p className="text-gray-600 my-2">{user.phoneNumber}</p>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-green-400 to-blue-500 h-32 relative">
+            <div className="absolute inset-x-0 -bottom-12 flex justify-center">
+              <Avatar className="size-24 border-4 border-white shadow-md">
+                <AvatarImage
+                  src={user?.profile?.profilePhoto}
+                  alt={user?.fullname}
+                />
+              </Avatar>
+            </div>
+          </div>
+
+          <div className="pt-20 pb-6 px-6 text-center">
+            <h1 className="text-2xl font-bold text-gray-800">
+              {user?.fullname}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">{user?.email}</p>
+            <div className="flex justify-center items-center gap-12 mt-6">
+              <div className="text-center border px-4 py-2 rounded-md shadow-sm">
+                <h2 className="text-gray-600 font-semibold">Vai trò</h2>
+                <p className="text-gray-800">{user?.role || "Chưa có"}</p>
+              </div>
+              <div className="text-center border px-4 py-2 rounded-md shadow-sm">
+                <h2 className="text-gray-600 font-semibold">Số điện thoại</h2>
+                <p className="text-gray-800">
+                  {user?.phoneNumber || "Chưa có"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-6 pb-6 flex justify-center">
+            <Button
+              className="text-white px-6"
+              onClick={() => window.history.back()}
+            >
+              Quay lại
+            </Button>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mt-4">
-        <Button onClick={() => window.history.back()}>Quay lại</Button>
       </div>
     </div>
   );

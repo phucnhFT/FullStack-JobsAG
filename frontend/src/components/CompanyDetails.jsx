@@ -41,7 +41,6 @@ export default function CompanyDetail() {
     <>
       <Navbar />
       <div className="max-w-6xl mx-auto p-6">
-        {/* Thẻ bọc toàn bộ phần nội dung chi tiết công ty */}
         <div className="border border-gray-300 rounded-lg shadow-lg bg-white p-6">
           {/* Banner công ty */}
           <div className="relative h-56 w-full rounded-lg overflow-hidden md:h-64 lg:h-80">

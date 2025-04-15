@@ -364,7 +364,7 @@ export const removeInterestedCompany = async (req, res) => {
 
     // Kiểm tra người dùng
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user) {  
       return res.status(404).json({
         success: false,
         message: "Người dùng không tồn tại",
