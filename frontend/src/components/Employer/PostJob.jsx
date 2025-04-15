@@ -24,6 +24,7 @@ export default function PostJob() {
     title: "",
     description: "",
     requirements: "",
+    benefits: "",
     salary: "",
     location: "",
     jobType: "",
@@ -114,6 +115,16 @@ export default function PostJob() {
               <Textarea
                 name="requirements"
                 value={input.requirements}
+                onChange={changeEventHandler}
+                rows={4}
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
+              />
+            </div>
+            <div>
+              <Label>Quyền lợi</Label>
+              <Textarea
+                name="benefits"
+                value={input.benefits}
                 onChange={changeEventHandler}
                 rows={4}
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"

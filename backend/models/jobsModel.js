@@ -18,6 +18,11 @@ const jobSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    benefits: {
+      // mô tả
+      type: String,
+      required: true,
+    },
     salary: {
       // lương
       type: Number,

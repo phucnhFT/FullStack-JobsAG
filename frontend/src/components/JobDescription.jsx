@@ -140,6 +140,12 @@ export default function JobDescription() {
             </span>
           </h1>
           <h1 className="font-bold my-1">
+            Quyền lợi:{" "}
+            <span className="pl-4 font-normal text-gray-800 whitespace-pre-line">
+              {singleJob?.benefits}
+            </span>
+          </h1>
+          <h1 className="font-bold my-1">
             Kinh nghiệm từ:{" "}
             <span className="pl-4 font-semibold text-gray-800">
               {singleJob?.experienceLevel} năm trở lên

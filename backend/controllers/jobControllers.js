@@ -22,6 +22,7 @@ export const postJob = async (req, res) => {
       postDate,
       expiryDate,
       category,
+      benefits
     } = req.body;
 
     const userId = req.id;
@@ -39,7 +40,8 @@ export const postJob = async (req, res) => {
       !companyId ||
       !postDate ||
       !expiryDate ||
-      !category
+      !category ||
+      !benefits
     ) {
       return res.status(400).json({
         success: false,
@@ -57,6 +59,7 @@ export const postJob = async (req, res) => {
       title,
       description,
       requirements,
+      benefits,
       salary: Number(salary),
       location,
       jobType,
