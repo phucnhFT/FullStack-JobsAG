@@ -34,8 +34,7 @@ export default function AdminUserDetail() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
+    <div className="min-h-screen bg-gray-100">1
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
           <div className="bg-gradient-to-r from-green-400 to-blue-500 h-32 relative">

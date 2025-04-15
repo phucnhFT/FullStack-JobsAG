@@ -129,8 +129,14 @@ export default function JobDescription() {
           </h1>
           <h1 className="font-bold my-1">
             Mô tả:{" "}
-            <span className="pl-4 font-normal text-gray-800">
+            <span className="pl-4 font-normal text-gray-800 whitespace-pre-line">
               {singleJob?.description}
+            </span>
+          </h1>
+          <h1 className="font-bold my-1">
+            Yêu cầu:{" "}
+            <span className="pl-4 font-normal text-gray-800 whitespace-pre-line">
+              {singleJob?.requirements}
             </span>
           </h1>
           <h1 className="font-bold my-1">

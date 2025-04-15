@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function PostJob() {
   const [input, setInput] = useState({
@@ -100,21 +101,21 @@ export default function PostJob() {
             </div>
             <div>
               <Label>Mô tả công việc</Label>
-              <Input
-                type="text"
+              <Textarea
                 name="description"
                 value={input.description}
                 onChange={changeEventHandler}
+                rows={4}
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
               <Label>Yêu cầu</Label>
-              <Input
-                type="text"
+              <Textarea
                 name="requirements"
                 value={input.requirements}
                 onChange={changeEventHandler}
+                rows={4}
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
