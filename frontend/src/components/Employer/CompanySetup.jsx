@@ -10,7 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-
+import { Textarea } from "@/components/ui/textarea";
 export default function CompanySetup() {
   const params = useParams();
   useGetCompanyById(params.id);
@@ -105,17 +105,18 @@ export default function CompanySetup() {
               />
             </div>
             <div>
-              <Label>Mô tả công ty</Label>
-              <Input
-                type="text"
+              <Label>Mô tả</Label>
+              <Textarea
                 name="description"
                 value={input.description}
                 onChange={handlerInputChange}
+                rows={4}
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
               />
             </div>
             <div>
               <Label>Website</Label>
-               <Input
+              <Input
                 type="text"
                 name="website"
                 value={input.website}

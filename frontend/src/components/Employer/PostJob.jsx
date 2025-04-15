@@ -162,6 +162,9 @@ export default function PostJob() {
                       Toàn thời gian
                     </SelectItem>
                     <SelectItem value="Bán Thời Gian">Bán thời gian</SelectItem>
+                    <SelectItem value="Công việc tự do">
+                      Công việc tự do
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

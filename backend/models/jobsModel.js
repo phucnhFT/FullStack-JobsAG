@@ -19,7 +19,7 @@ const jobSchema = new mongoose.Schema(
       },
     ],
     benefits: {
-      // mô tả
+      // quyền lợi
       type: String,
       required: true,
     },
