@@ -267,40 +267,18 @@ export const handleJobApproval = async (req, res) => {
     return res.status(500).json({ message: "Lỗi khi xử lý yêu cầu" });
   }
 };
-//update stars
+// thống kê số công việc trên hệ thống
 export const getJobStats = async (req, res) => {
   try {
-    const { year, month, day, companyId } = req.params;
+    const { startDate, endDate } = req.params;
 
-    // Kiểm tra xem companyId có hợp lệ hay không
-    const company = await Company.findById(companyId);
-    if (!company) {
-      return res.status(400).json({ message: "Công ty không tồn tại" });
-    }
-
-    // Tạo ngày tháng năm từ tham số
-    const selectedDate = new Date(year, month - 1, day);
-
-    // Tính toán thời gian bắt đầu cho ngày, tháng và năm
-    const startDate = new Date(year, month - 1, day);
-    const startOfMonth = new Date(year, month - 1, 1);
-    const startOfYear = new Date(year, 0, 1);
+    // Tạo ngày bắt đầu và ngày kết thúc từ tham số
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
     // Thống kê số lượng công việc
-    const dailyJobs = await Job.countDocuments({
-      postDate: {
-        $gte: startDate,
-        $lt: new Date(startDate.getTime() + 86400000),
-      },
-      company: companyId,
-    });
-    const monthlyJobs = await Job.countDocuments({
-      postDate: { $gte: startOfMonth },
-      company: companyId,
-    });
-    const yearlyJobs = await Job.countDocuments({
-      postDate: { $gte: startOfYear },
-      company: companyId,
+    const jobs = await Job.find({
+      postDate: { $gte: start, $lt: new Date(end.getTime() + 86400000) },
     });
 
     // Thống kê toàn bộ công việc trong hệ thống
@@ -309,12 +287,9 @@ export const getJobStats = async (req, res) => {
     return res.status(200).json({
       success: true,
       stats: {
-        daily: dailyJobs,
-        monthly: monthlyJobs,
-        yearly: yearlyJobs,
-        total: totalJobs,
+        total: jobs.length,
+        all: totalJobs,
       },
-      company: company.name,
     });
   } catch (error) {
     console.error(error);

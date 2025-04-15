@@ -510,9 +510,9 @@ export const getUserDetail = async (req, res) => {
 // thêm mới người dùng Admin
 export const addUser = async (req, res) => {
   try {
-    const { fullname, email, phoneNumber, password, role } = req.body;
+    const { fullname, email, phoneNumber, password } = req.body;
 
-    if (!fullname || !email || !phoneNumber || !password || !role) {
+    if (!fullname || !email || !phoneNumber || !password) {
       return res.status(400).json({
         message: "Vui lòng nhập đầy đủ các trường !",
         success: false,
@@ -536,7 +536,7 @@ export const addUser = async (req, res) => {
       email,
       phoneNumber,
       password: hashedPassword,
-      role,
+      role: "Admin", // chỉ thêm role admin
       profile: {
         profilePhoto: cloudResponse.secure_url,
       },

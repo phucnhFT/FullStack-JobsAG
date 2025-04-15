@@ -27,11 +27,13 @@ router.route("/jobs-by-category").get(getJobsByCategory);
 //admin
 router.route("/handle-job/:id").put(authenticate, isAdmin, handleJobApproval);
 router
-  .route("/stats/:year/:month/:day/:companyId")
+  .route("/stats/:startDate/:endDate")
   .get(authenticate, isAdmin, getJobStats);
+
 router
   .route("/get-all-jobs-admin")
   .get(authenticate, isAdmin, getAllJobsForAdmin);
+
 router.route("/delete-job/:id").delete(authenticate, isAdmin, deleteJob);
 router.route("/companies").get(authenticate, isAdmin, getCompanies);
 

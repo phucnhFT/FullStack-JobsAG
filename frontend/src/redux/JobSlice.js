@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const jobSlice = createSlice({
   name: "job",
@@ -6,13 +6,16 @@ const jobSlice = createSlice({
     allJobs: [],
     allAdminJobs: [],
     singleJob: null,
-    searchJobByText: "",
+    searchJobByText: "", // Tìm kiếm theo tên công việc
     allAppliedJobs: [],
-    searchedQuery: "",
+    searchedQuery: {
+      location: "", // Địa điểm lọc
+      salary: "", // Mức lương lọc
+      searchJobByText: "", // Tìm kiếm theo từ khóa
+    },
     categories: [],
   },
   reducers: {
-    //actions
     setAllJobs: (state, action) => {
       state.allJobs = action.payload;
     },
@@ -29,13 +32,14 @@ const jobSlice = createSlice({
       state.allAppliedJobs = action.payload;
     },
     setSearchedQuery: (state, action) => {
-      state.searchedQuery = action.payload;
+      state.searchedQuery = { ...state.searchedQuery, ...action.payload };
     },
     setCategories: (state, action) => {
       state.categories = action.payload;
     },
   },
 });
+
 export const {
   setAllJobs,
   setSingleJob,
@@ -45,4 +49,5 @@ export const {
   setSearchedQuery,
   setCategories,
 } = jobSlice.actions;
+
 export default jobSlice.reducer;

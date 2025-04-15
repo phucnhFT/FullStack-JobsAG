@@ -16,6 +16,7 @@ export default function Admin() {
   }, []);
   return (
     <div>
+      <Navbar />
       <JobStats />
     </div>
   );

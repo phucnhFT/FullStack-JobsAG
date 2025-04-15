@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Bookmark } from "lucide-react";
 import { Avatar, AvatarImage } from "./ui/avatar";
@@ -10,6 +10,35 @@ import { toast } from "sonner";
 
 export default function Job({ job }) {
   const navigate = useNavigate();
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  useEffect(() => {
+    const storedIsFollowed = localStorage.getItem(`isFollowed_${job?._id}`);
+    if (storedIsFollowed) {
+      setIsFollowed(JSON.parse(storedIsFollowed));
+    } else {
+      const checkFollowed = async () => {
+        try {
+          const res = await axios.get(
+            `${USER_API}/interested-company/${job?._id}`,
+            {
+              withCredentials: true,
+            }
+          );
+          if (res.data.success) {
+            setIsFollowed(true);
+            localStorage.setItem(
+              `isFollowed_${job?._id}`,
+              JSON.stringify(true)
+            );
+          }
+        } catch (error) {
+          console.error("Error checking followed company:", error);
+        }
+      };
+      checkFollowed();
+    }
+  }, [job?._id]);
 
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
@@ -29,10 +58,29 @@ export default function Job({ job }) {
         { withCredentials: true }
       );
       if (res.data.success) {
+        setIsFollowed(true);
+        localStorage.setItem(`isFollowed_${job?._id}`, JSON.stringify(true));
         toast.success("Đã Thêm công ty vào danh sách quan tâm");
       }
     } catch (error) {
-      //console.error("Error adding to favorites:", error);
+      console.error("Error adding to favorites:", error);
+      toast.error("Lỗi hoặc công ty đã bị xoá !!");
+    }
+  };
+
+  const handleRemoveCompany = async () => {
+    try {
+      const res = await axios.delete(
+        `${USER_API}/delete-interested/${job?.company?._id}`,
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        setIsFollowed(false);
+        localStorage.setItem(`isFollowed_${job?._id}`, JSON.stringify(false));
+        toast.success("Đã bỏ theo dõi công ty");
+      }
+    } catch (error) {
+      console.error("Error removing company:", error);
       toast.error("Lỗi hoặc công ty đã bị xoá !!");
     }
   };
@@ -53,9 +101,13 @@ export default function Job({ job }) {
           variant="outline"
           className="rounded-full"
           size="icon"
-          onClick={handleAddToFavorites}
+          onClick={isFollowed ? handleRemoveCompany : handleAddToFavorites}
         >
-          <Bookmark className="w-4 h-4" />
+          <Bookmark
+            className={`w-4 h-4 ${
+              isFollowed ? "text-yellow-400" : "text-gray-500"
+            }`}
+          />
         </Button>
       </div>
 

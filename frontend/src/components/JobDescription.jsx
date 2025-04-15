@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/redux/JobSlice.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import axios from "axios";
 import { APPLICANTS_API, JOB_API } from "@/utils/constant";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/shared/Navbar";
 import { Button } from "@/components/ui/button";
 
-export default function JobDescription() {
+export default function JobDescription({job}) {
   const { singleJob } = useSelector(store=> store.job);
   const { user } = useSelector(store=>store.user);
   const [isExpired, setIsExpired] = useState(false); 
@@ -23,6 +23,7 @@ export default function JobDescription() {
   const params = useParams();
   const jobId = params.id;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handlerApplyJob = async () => {
     try {
@@ -148,7 +149,7 @@ export default function JobDescription() {
           <h1 className="font-bold my-1">
             Kinh nghiệm từ:{" "}
             <span className="pl-4 font-semibold text-gray-800">
-              {singleJob?.experienceLevel} năm trở lên
+              {singleJob?.experienceLevel}
             </span>
           </h1>
           <h1 className="font-bold my-1">

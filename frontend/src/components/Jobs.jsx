@@ -5,23 +5,60 @@ import Job from "./Job";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
+// const formatCurrency = (value) => {
+//   return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+// };
 
-export default function Jobs(){
+export default function Jobs() {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
   const [filterJobs, setFilterJobs] = useState(allJobs);
 
+  const salaryRanges = {
+    "Dưới 5 triệu": [0, 5000000],
+    "5 - 10 triệu": [5000000, 10000000],
+    "10 - 20 triệu": [10000000, 20000000],
+    "Trên 20 triệu": [20000000, Infinity],
+  };
+
   useEffect(() => {
-    if (searchedQuery) {
-      const filteredJobs = allJobs.filter((job) => {
-        return (
-          job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.location.toLowerCase().includes(searchedQuery.toLowerCase())
+    if (allJobs.length > 0) {
+      let filteredJobs = allJobs;
+
+      // Lọc theo location nếu có
+      if (searchedQuery.location) {
+        filteredJobs = filteredJobs.filter((job) =>
+          job.location
+            .toLowerCase()
+            .includes(searchedQuery.location.toLowerCase())
         );
-      });
+      }
+
+      // Lọc theo salary nếu có
+      if (searchedQuery.salary) {
+        const [minSalary, maxSalary] = salaryRanges[searchedQuery.salary] || [
+          0,
+          Infinity,
+        ];
+        filteredJobs = filteredJobs.filter((job) => {
+          const salary = job.salary; // job.salary là số
+          return salary >= minSalary && salary <= maxSalary;
+        });
+      }
+
+      // Lọc theo text (title, description, location, category)
+      if (searchedQuery.searchJobByText) {
+        const searchText = searchedQuery.searchJobByText.toLowerCase();
+
+        filteredJobs = filteredJobs.filter(
+          (job) =>
+            job.title.toLowerCase().includes(searchText) ||
+            job.description.toLowerCase().includes(searchText) ||
+            job.location.toLowerCase().includes(searchText) ||
+            (job.category && job.category.toLowerCase().includes(searchText))
+        );
+      }
+
       setFilterJobs(filteredJobs);
-    } else {
-      setFilterJobs(allJobs);
     }
   }, [allJobs, searchedQuery]);
 
@@ -47,6 +84,7 @@ export default function Jobs(){
                     key={job?._id}
                   >
                     <Job job={job} />
+
                   </motion.div>
                 ))}
               </div>
@@ -56,5 +94,4 @@ export default function Jobs(){
       </div>
     </div>
   );
-};
-
+}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { JOB_API } from "@/utils/constant";
-import { toast } from "sonner";
 import { motion } from "framer-motion";
 import Navbar from "@/components/shared/Navbar";
 import {
@@ -14,181 +13,100 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { CalendarDays } from "lucide-react";
 
 export default function JobStats() {
-  const [stats, setStats] = useState({
-    daily: 0,
-    monthly: 0,
-    yearly: 0,
-    total: 0,
-  });
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [day, setDay] = useState(new Date().getDate());
-  const [companyId, setCompanyId] = useState("");
-  const [companies, setCompanies] = useState([]);
-  const [companyName, setCompanyName] = useState("");
-  const [otherCompanyStats, setOtherCompanyStats] = useState([]);
+  const [stats, setStats] = useState({ total: 0, all: 0 });
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  // Hàm để lấy thống kê công việc
   const fetchJobStats = async () => {
     try {
-      const res = await axios.get(
-        `${JOB_API}/stats/${year}/${month}/${day}/${companyId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      if (res.data.success) {
-        setStats(res.data.stats);
-        setCompanyName(res.data.company);
-        setOtherCompanyStats(res.data.otherCompanyStats);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleYearChange = (e) => {
-    setYear(e.target.value);
-  };
-
-  const handleMonthChange = (e) => {
-    setMonth(e.target.value);
-  };
-
-  const handleDayChange = (e) => {
-    setDay(e.target.value);
-  };
-
-  const handleCompanyIdChange = (e) => {
-    setCompanyId(e.target.value);
-  };
-
-  const fetchCompanies = async () => {
-    try {
-      const res = await axios.get(`${JOB_API}/companies`, {
+      const res = await axios.get(`${JOB_API}/stats/${startDate}/${endDate}`, {
         withCredentials: true,
       });
       if (res.data.success) {
-        setCompanies(res.data.companies);
+        setStats(res.data.stats);
       }
     } catch (error) {
       console.error(error);
-      toast.error("Lỗi khi lấy danh sách công ty");
     }
   };
 
   useEffect(() => {
     fetchJobStats();
-    fetchCompanies(); // Gọi hàm khi component được mount
-  }, [year, month, day, companyId]);
+  }, [startDate, endDate]);
 
   return (
-    <div className="container mx-auto p-6">
-      <Navbar />
-      <h1 className="text-2xl font-bold mb-4 mt-10">Thống kê Công việc</h1>
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold">
-          Số lượng công việc đã đăng trên hệ thống
-        </h2>
-        <div className="flex justify-between mb-4">
-          <div>
-            <label>Năm:</label>
-            <select value={year} onChange={handleYearChange}>
-              {Array.from({ length: 10 }, (_, i) => 2024 + i).map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
+    <div className="min-h-screen bg-gray-100">
+      <div className="container mx-auto p-6">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-3xl font-bold mb-6 text-gray-800"
+        >
+          📊 Thống kê Công việc
+        </motion.h1>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-white p-6 rounded-2xl shadow-lg"
+        >
+          <h2 className="text-xl font-semibold mb-4 text-indigo-600">
+            Số lượng công việc đã đăng trên hệ thống
+          </h2>
+
+          {/* Bộ lọc thời gian */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+            <div className="relative w-full sm:w-64">
+              <CalendarDays
+                className="absolute left-3 top-3 text-gray-400"
+                size={18}
+              />
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-full border rounded-lg pl-10 pr-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
+
+            <span className="text-gray-600">đến</span>
+
+            <div className="relative w-full sm:w-64">
+              <CalendarDays
+                className="absolute left-3 top-3 text-gray-400"
+                size={18}
+              />
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full border rounded-lg pl-10 pr-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
           </div>
-          <div>
-            <label>Tháng:</label>
-            <select value={month} onChange={handleMonthChange}>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label>Ngày:</label>
-            <select value={day} onChange={handleDayChange}>
-              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            {companies && companies.length > 0 ? (
-              <select value={companyId} onChange={handleCompanyIdChange}>
-                <option value="">Chọn công ty</option>
-                {companies.map((company) => (
-                  <option key={company._id} value={company._id}>
-                    {company.name}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <p>Không có công ty nào</p>
-            )}
-          </div>
-        </div>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={[
-              { name: "Ngày", uv: stats.daily || 0 },
-              { name: "Tháng", uv: stats.monthly || 0 },
-              { name: "Năm", uv: stats.yearly || 0 },
-              { name: "Tổng", uv: stats.total || 0 },
-            ]}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis domain={[0, "dataMax"]} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="uv" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-        <h2 className="text-lg font-semibold">
-          Số lượng công việc đã đăng của công ty {companyName}
-        </h2>
-        {otherCompanyStats && otherCompanyStats.length > 0 ? (
+
+          {/* Biểu đồ */}
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
-              data={otherCompanyStats.map((stat, index) => ({
-                name: `Công ty ${index + 1}`,
-                uv: stat,
-              }))}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+              data={[
+                { name: "Tổng", uv: stats.total || 0 },
+                { name: "Tất cả", uv: stats.all || 0 },
+              ]}
+              margin={{ top: 10, right: 30, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
-              <YAxis domain={[0, "dataMax"]} />
+              <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="uv" fill="#82ca9d" />
+              <Bar dataKey="uv" fill="#6366F1" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        ) : (
-          <p>Không có dữ liệu công việc cho công ty khác</p>
-        )}
+        </motion.div>
       </div>
     </div>
   );

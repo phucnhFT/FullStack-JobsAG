@@ -30,7 +30,7 @@ const jobSchema = new mongoose.Schema(
     },
     experienceLevel: {
       // cấp độ kinh nghiệm cho công việc
-      type: Number,
+      type: String,
       required: true,
     },
     location: {
@@ -39,7 +39,6 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
     jobType: {
-      //thêm enum
       // loại công việc
       type: String,
       required: true,

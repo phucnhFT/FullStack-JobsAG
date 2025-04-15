@@ -378,33 +378,14 @@ export default function AdminUsers() {
                 <div className="flex items-center">
                   <input
                     type="radio"
-                    id="applicant"
+                    id="admin"
                     name="role"
-                    value="Ứng Viên"
-                    checked={role === "Ứng Viên"}
+                    value="Admin"
+                    checked={role === "Admin"}
                     onChange={(e) => setRole(e.target.value)}
                   />
-                  <Label
-                    className="ml-2 text-sm text-gray-600"
-                    htmlFor="applicant"
-                  >
-                    Ứng Viên
-                  </Label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="employer"
-                    name="role"
-                    value="Nhà Tuyển Dụng"
-                    checked={role === "Nhà Tuyển Dụng"}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                  <Label
-                    className="ml-2 text-sm text-gray-600"
-                    htmlFor="employer"
-                  >
-                    Nhà Tuyển Dụng
+                  <Label className="ml-2 text-sm text-gray-600" htmlFor="admin">
+                    Admin
                   </Label>
                 </div>
               </div>
