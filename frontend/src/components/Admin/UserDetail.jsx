@@ -36,44 +36,74 @@ export default function AdminUserDetail() {
   return (
     <div className="container mx-auto px-4 md:px-8 py-6">
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-green-400 to-blue-500 h-32 relative">
-            <div className="absolute inset-x-0 -bottom-12 flex justify-center">
-              <Avatar className="size-24 border-4 border-white shadow-md">
+
+      <div className="container mx-auto px-4 md:px-8 py-12">
+        <div className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+          {/* Banner */}
+          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-48 relative">
+            <div className="absolute inset-x-0 -bottom-16 flex justify-center">
+              <Avatar className="size-32 border-4 border-white shadow-lg">
                 <AvatarImage
-                  src={user?.profile?.profilePhoto}
+                  src={user?.profile?.profilePhoto || "/default-avatar.png"}
                   alt={user?.fullname}
                 />
               </Avatar>
             </div>
           </div>
 
-          <div className="pt-20 pb-6 px-6 text-center">
-            <h1 className="text-2xl font-bold text-gray-800">
-              {user?.fullname}
+          {/* Thông tin người dùng */}
+          <div className="pt-24 pb-10 px-6 text-center">
+            <h1 className="text-3xl font-bold text-gray-800">
+              {user?.fullname || "Tên người dùng"}
             </h1>
             <p className="text-gray-500 text-sm mt-1">{user?.email}</p>
-            <div className="flex justify-center items-center gap-12 mt-6">
-              <div className="text-center border px-4 py-2 rounded-md shadow-sm">
-                <h2 className="text-gray-600 font-semibold">Vai trò</h2>
+
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+              {/* Vai trò */}
+              <div className="bg-gray-50 rounded-xl p-5 shadow hover:shadow-md transition">
+                <h2 className="text-gray-600 font-semibold mb-2">Vai trò</h2>
                 <p className="text-gray-800">{user?.role || "Chưa có"}</p>
               </div>
-              <div className="text-center border px-4 py-2 rounded-md shadow-sm">
-                <h2 className="text-gray-600 font-semibold">Số điện thoại</h2>
+
+              {/* Số điện thoại */}
+              <div className="bg-gray-50 rounded-xl p-5 shadow hover:shadow-md transition">
+                <h2 className="text-gray-600 font-semibold mb-2">
+                  Số điện thoại
+                </h2>
                 <p className="text-gray-800">
                   {user?.phoneNumber || "Chưa có"}
                 </p>
               </div>
+
+              {/* CV */}
+              <div className="bg-gray-50 rounded-xl p-5 shadow hover:shadow-md transition sm:col-span-2">
+                <h2 className="text-gray-600 font-semibold mb-2">
+                  📄 CV của người dùng
+                </h2>
+                {user?.profile?.resume ? (
+                  <a
+                    href={user?.profile?.resume}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-indigo-600 hover:underline font-medium"
+                  >
+                    {user?.profile?.resumeOriginalName ||
+                      "Xem CV"}
+                  </a>
+                ) : (
+                  <p className="text-gray-800">Đây là nhà tuyển dụng</p>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="px-6 pb-6 flex justify-center">
+          {/* Nút quay lại */}
+          <div className="px-6 pb-10 flex justify-center">
             <Button
-              className="text-white px-6"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2 rounded-full shadow transition"
               onClick={() => window.history.back()}
             >
-              Quay lại
+              ← Quay lại
             </Button>
           </div>
         </div>

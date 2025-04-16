@@ -19,12 +19,14 @@ import { MoreHorizontal } from "lucide-react";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
+// Trạng thái ứng viên có thể chọn
 const shortlistingStatus = ["đã chấp nhận", "đã từ chối"];
 
 export default function ApplicantsTable() {
   const { applicants } = useSelector((store) => store.application);
   const [updatedStatuses, setUpdatedStatuses] = useState({}); // Lưu trạng thái đã xử lý
 
+  // Cập nhật trạng thái ứng viên
   const statusHandler = async (status, id) => {
     try {
       axios.defaults.withCredentials = true;
@@ -35,7 +37,7 @@ export default function ApplicantsTable() {
         toast.success("Trạng thái đã được cập nhật");
         toast.success(res.data.message);
 
-        // Cập nhật local state để ẩn hành động
+        // Cập nhật trạng thái trong state
         setUpdatedStatuses((prev) => ({
           ...prev,
           [id]: status,
@@ -64,8 +66,11 @@ export default function ApplicantsTable() {
         </TableHeader>
         <TableBody>
           {applicants?.applications?.map((item) => {
-            const currentStatus = updatedStatuses[item._id] || item.status;
-            const isHandled = !!currentStatus;
+            // Lấy trạng thái từ backend hoặc mặc định là "đang chờ"
+            const statusFromBackend = item.status || "đang chờ";
+            const currentStatus =
+              updatedStatuses[item._id] || statusFromBackend;
+            const isHandled = shortlistingStatus.includes(currentStatus);
 
             return (
               <TableRow
@@ -96,18 +101,20 @@ export default function ApplicantsTable() {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end items-center gap-2">
+                    {/* Hiển thị trạng thái */}
                     <span
                       className={`text-xs font-medium px-2.5 py-1 rounded-full transition-colors duration-200 ${
                         currentStatus === "đã chấp nhận"
                           ? "bg-green-100 text-green-700"
                           : currentStatus === "đã từ chối"
                           ? "bg-red-100 text-red-700"
-                          : "bg-gray-100 text-gray-600"
+                          : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {currentStatus || "chưa cập nhật"}
+                      {currentStatus}
                     </span>
 
+                    {/* Hiển thị hành động nếu chưa xử lý */}
                     {!isHandled && (
                       <Popover>
                         <PopoverTrigger>

@@ -2,22 +2,43 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-t-gray-200 py-8">
+    <footer className="bg-gray-50 border-t border-gray-200 py-8 mt-12">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <h2 className="text-xl font-bold">JobsAG</h2>
-            <p className="text-sm">© 2025 Nguyễn Hoàng Phúc</p>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Logo & Info */}
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-bold text-gray-800">JobsAG</h2>
+            <p className="text-sm text-gray-500">© 2025 Nguyễn Hoàng Phúc</p>
+            <p className="text-sm text-gray-400">Tìm việc nhanh</p>
           </div>
 
-          <div className="flex space-x-4 mt-4 md:mt-0">
+          {/* Navigation */}
+          <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-600">
+            <a href="/" className="hover:text-blue-600 transition">
+              Trang chủ
+            </a>
+            <a href="/jobs" className="hover:text-blue-600 transition">
+              Công việc
+            </a>
+            <a href="/about" className="hover:text-blue-600 transition">
+              Về chúng tôi
+            </a>
+            <a href="/contact" className="hover:text-blue-600 transition">
+              Liên hệ
+            </a>
+          </div>
+
+          {/* Social Icons */}
+          <div className="flex space-x-4">
             <a
               href="https://www.facebook.com/profile.php?id=100029510903633"
-              className="hover:text-gray-400"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="Facebook"
+              className="text-gray-500 hover:text-blue-600 transition"
             >
               <svg
-                className="w-6 h-6 md:w-8 md:h-8"
+                className="w-6 h-6 md:w-7 md:h-7"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -26,14 +47,15 @@ export default function Footer() {
             </a>
             <a
               href="https://github.com/phucnhFT"
-              className="hover:text-gray-500"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
+              className="text-gray-500 hover:text-gray-800 transition"
             >
               <svg
-                className="w-6 h-6 md:w-8 md:h-8"
+                className="w-6 h-6 md:w-7 md:h-7"
                 fill="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   fillRule="evenodd"
