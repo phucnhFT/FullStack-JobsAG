@@ -79,77 +79,100 @@ export default function CompanySetup() {
   }, [singleCompany]);
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="max-w-xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
-        <form onSubmit={submitHandler}>
-          <div className="flex items-center gap-5 p-8">
-            <Button
-              onClick={() => navigate("/employer/companies")}
-              variant="outline"
-              className="flex items-center gap-2 text-gray-500 font-semibold"
-            >
-              <ArrowLeft />
-              <span>Trở về</span>
-            </Button>
-            <h1 className="font-bold text-xl">Thiết lập công ty</h1>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="max-w-3xl mx-auto mt-10 p-6 sm:p-10 bg-white rounded-2xl shadow-md">
+        <div className="flex items-center justify-between mb-6">
+          <Button
+            onClick={() => navigate("/employer/companies")}
+            variant="outline"
+            className="flex items-center gap-2 text-gray-600"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Trở về</span>
+          </Button>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Thiết lập thông tin công ty
+          </h1>
+        </div>
+
+        <form onSubmit={submitHandler} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <Label>Tên công ty</Label>
+              <Label className="text-gray-700">Tên công ty</Label>
               <Input
                 type="text"
                 name="name"
                 value={input.name}
                 onChange={handlerInputChange}
+                className="mt-1"
+                placeholder="Nhập tên công ty"
               />
             </div>
+
             <div>
-              <Label>Mô tả</Label>
-              <Textarea
-                name="description"
-                value={input.description}
-                onChange={handlerInputChange}
-                rows={4}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1 w-full"
-              />
-            </div>
-            <div>
-              <Label>Website</Label>
+              <Label className="text-gray-700">Website</Label>
               <Input
                 type="text"
                 name="website"
                 value={input.website}
                 onChange={handlerInputChange}
+                className="mt-1"
+                placeholder="https://example.com"
               />
             </div>
+
+            <div className="sm:col-span-2">
+              <Label className="text-gray-700">Mô tả</Label>
+              <Textarea
+                name="description"
+                value={input.description}
+                onChange={handlerInputChange}
+                rows={4}
+                className="mt-1 focus-visible:ring-offset-0 focus-visible:ring-0"
+                placeholder="Mô tả ngắn gọn về công ty..."
+              />
+            </div>
+
             <div>
-              <Label>Vị trí</Label>
+              <Label className="text-gray-700">Vị trí</Label>
               <Input
                 type="text"
                 name="location"
                 value={input.location}
                 onChange={handlerInputChange}
+                className="mt-1"
+                placeholder="TP. Hồ Chí Minh, Hà Nội..."
               />
             </div>
+
             <div>
-              <Label>Logo</Label>
+              <Label className="text-gray-700">Logo công ty</Label>
               <Input
                 type="file"
                 accept="image/*"
                 onChange={handlerFileChange}
+                className="mt-1"
               />
             </div>
           </div>
-          {loading ? (
-            <Button className="w-full my-4">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Vui lòng chờ...
+
+          <div className="pt-4">
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full text-base font-medium"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Đang cập nhật...
+                </>
+              ) : (
+                "Cập nhật thông tin"
+              )}
             </Button>
-          ) : (
-            <Button type="submit" className="w-full my-4">
-              Cập nhật
-            </Button>
-          )}
+          </div>
         </form>
       </div>
     </div>

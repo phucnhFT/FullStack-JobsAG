@@ -72,6 +72,12 @@ export default function AdminUsers() {
         if (res.data.success) {
           toast.success("Xóa người dùng thành công");
           fetchUsers(currentPage);
+        } else {
+          Swal.fire({
+            title: "Lỗi",
+            text: res.data.message,
+            icon: "error",
+          });
         }
       } catch (error) {
         console.error(error);
@@ -198,115 +204,100 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="container mx-auto px-4 md:px-8 py-6">
       <Navbar />
-      <h1 className="text-xl md:text-2xl font-bold mb-4 mt-6 md:mt-10">
-        Danh sách Người dùng
-      </h1>
-      <div className="flex justify-between mb-4">
+      <div className="flex items-center justify-between mb-6 mt-6">
+        <h1 className="text-2xl font-semibold text-gray-800">
+          Danh sách Người dùng
+        </h1>
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="bg-[#2a21a8] hover:bg-[#1e1a87] text-white"
+        >
+          + Thêm mới
+        </Button>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow-sm border mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <Input
           type="text"
-          placeholder="Tìm kiếm người dùng"
+          placeholder="Tìm kiếm người dùng..."
           value={searchTerm}
           onChange={handleSearch}
-          className="w-full md:w-1/2 py-2 pl-10 text-sm text-gray-700"
+          className="w-full md:w-1/2 py-2 pl-4 text-sm border-gray-300 focus:ring-[#2a21a8] focus:border-[#2a21a8]"
         />
-        <p class="border border-gray-400 p-2 text-center">
-          <Label>Tổng: </Label>
-          {totalApplicants} ứng viên, {totalEmployers} nhà tuyển dụng
-        </p>
-        <Button onClick={() => setIsOpen(true)}>Thêm mới</Button>
+        <div className="text-sm text-gray-600 font-medium">
+          <Label className="font-medium">Tổng:</Label> {totalApplicants} Ứng
+          viên, {totalEmployers} Nhà tuyển dụng
+        </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-          <thead>
-            <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal font-medium">
-              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Avatar</th>
-              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Họ & Tên</th>
-              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Role</th>
-              <th className="py-2 px-4 md:py-3 md:px-6 text-left">Hành động</th>
+
+      <div className="overflow-x-auto bg-white rounded-xl shadow-sm border">
+        <table className="min-w-full table-auto">
+          <thead className="bg-gray-100 text-gray-700 text-sm uppercase">
+            <tr>
+              <th className="py-3 px-4 text-left">Avatar</th>
+              <th className="py-3 px-4 text-left">Họ & Tên</th>
+              <th className="py-3 px-4 text-left">Role</th>
+              <th className="py-3 px-4 text-left">Hành động</th>
             </tr>
           </thead>
-          <tbody className="text-gray-600 text-sm font-medium">
-            {searchTerm
-              ? filteredUsers.map((user) => (
-                  <motion.tr
-                    key={user._id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="border-b border-gray-200 hover:bg-gray-100"
+          <tbody className="text-sm text-gray-700 divide-y divide-gray-200">
+            {(searchTerm ? filteredUsers : users).map((user) => (
+              <motion.tr
+                key={user._id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="hover:bg-gray-50"
+              >
+                <td className="py-3 px-4">
+                  <Avatar>
+                    <AvatarImage
+                      src={user?.profile?.profilePhoto}
+                      alt="avatar"
+                    />
+                  </Avatar>
+                </td>
+                <td className="py-3 px-4">{user.fullname}</td>
+                <td className="py-3 px-4">{user.role}</td>
+                <td className="py-3 px-4 space-x-2">
+                  <Link to={`/admin/users/${user._id}`}>
+                    <Button size="sm" variant="outline">
+                      Xem
+                    </Button>
+                  </Link>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleUpdate(user)}
                   >
-                    <td className="py-2 px-4 md:py-3 md:px-6">
-                      <Avatar className="cursor-pointer">
-                        <AvatarImage
-                          src={user?.profile?.profilePhoto}
-                          alt="@shadcn"
-                        />
-                      </Avatar>
-                    </td>
-                    <td className="py-2 px-4 md:py-3 md:px-6">
-                      {user.fullname}
-                    </td>
-                    <td className="py-2 px-4 md:py-3 md:px-6">{user.role}</td>
-                    <td className="py-2 px-4 md:py-3 md:px-6 flex space-x-2">
-                      <Link to={`/admin/users/${user._id}`}>
-                        <Button>Xem chi tiết</Button>
-                      </Link>
-                      <Button onClick={() => handleDeleteUser(user._id)}>
-                        Xóa
-                      </Button>
-                      <Button onClick={() => handleUpdate(user)}>
-                        Cập nhật
-                      </Button>
-                    </td>
-                  </motion.tr>
-                ))
-              : users.map((user) => (
-                  <motion.tr
-                    key={user._id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="border-b border-gray-200 hover:bg-gray-100"
+                    Cập nhật
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleDeleteUser(user._id)}
                   >
-                    <td className="py-2 px-4 md:py-3 md:px-6">
-                      <Avatar className="cursor-pointer">
-                        <AvatarImage
-                          src={user?.profile?.profilePhoto}
-                          alt="@shadcn"
-                        />
-                      </Avatar>
-                    </td>
-                    <td className="py-2 px-4 md:py-3 md:px-6">
-                      {user.fullname}
-                    </td>
-                    <td className="py-2 px-4 md:py-3 md:px-6">{user.role}</td>
-                    <td className="py-2 px-4 md:py-3 md:px-6 flex space-x-2">
-                      <Link to={`/admin/users/${user._id}`}>
-                        <Button>Xem chi tiết</Button>
-                      </Link>
-                      <Button onClick={() => handleDeleteUser(user._id)}>
-                        Xóa
-                      </Button>
-                      <Button onClick={() => handleUpdate(user)}>
-                        Cập nhật
-                      </Button>
-                    </td>
-                  </motion.tr>
-                ))}
+                    Xóa
+                  </Button>
+                </td>
+              </motion.tr>
+            ))}
           </tbody>
         </table>
       </div>
-      <div className="pagination mt-4 flex justify-center">
+
+      {/* Pagination */}
+      <div className="mt-6 flex justify-center">
         {Array.from({ length: totalPages }, (_, index) => (
           <Button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 ${
+            className={`mx-1 px-4 py-2 rounded-md text-sm ${
               currentPage === index + 1
                 ? "bg-[#2a21a8] text-white"
-                : "bg-gray-200"
+                : "bg-gray-200 text-gray-800"
             }`}
           >
             {index + 1}

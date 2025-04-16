@@ -1,5 +1,6 @@
 import { User } from "../models/userModel.js";
 import { Company } from "../models/companyModel.js";
+import { Job } from "../models/jobsModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../config/datauri.js";
@@ -449,25 +450,23 @@ export const getUsers = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
-    const {id} = req.params
-    const user = await User.findByIdAndDelete(id)
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
         success: false,
         message: "Người dùng không tồn tại",
-      })
+      });
     }
     return res.status(200).json({
       success: true,
       message: "Xoá người dùng thành công",
-    })
+    });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: "Lỗi xoá người dùng" });
+    return res.status(500).json({ message: "Lỗi xoá người dùng" });
   }
-}
+};
 
 //chi tiết người dùng
 export const getUserDetail = async (req, res) => {

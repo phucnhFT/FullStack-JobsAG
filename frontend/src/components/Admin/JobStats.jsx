@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { JOB_API } from "@/utils/constant";
 import { motion } from "framer-motion";
-import Navbar from "@/components/shared/Navbar";
 import {
   BarChart,
   Bar,
@@ -14,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CalendarDays } from "lucide-react";
+import Navbar from "@/components/shared/Navbar";
 
 export default function JobStats() {
   const [stats, setStats] = useState({ total: 0, all: 0 });
@@ -38,7 +38,8 @@ export default function JobStats() {
   }, [startDate, endDate]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="container mx-auto px-4 md:px-8 py-6">
+      <Navbar />
       <div className="container mx-auto p-6">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
