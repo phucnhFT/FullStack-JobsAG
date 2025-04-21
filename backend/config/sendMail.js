@@ -41,7 +41,7 @@ const sendResetPasswordEmail = async (to, link) => {
         <p>Xin chào ${name},</p>
         <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu của bạn. Để tiếp tục quá trình tạo mật khẩu mới, vui lòng làm theo các bước sau:</p>
         <p><strong>Bước 1:</strong> Nhấp vào liên kết dưới đây để đặt lại mật khẩu của bạn:</p>
-        <p><a href="${link}" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Reset Mật Khẩu</a></p>
+        <p><a href="${`http://localhost:5173/reset-password/:token`}" style="background-color: #333; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Reset Mật Khẩu</a></p>
         <p><strong>Bước 2:</strong> Nhập địa chỉ email của bạn và mật khẩu mới vào trang đặt lại mật khẩu.</p>
         <p><strong>Bước 3:</strong> Nhấp vào nút "đặt lại Mật Khẩu" để hoàn tất quá trình.</p>
         <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>

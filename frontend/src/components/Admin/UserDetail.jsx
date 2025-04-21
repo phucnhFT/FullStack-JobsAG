@@ -44,7 +44,7 @@ export default function AdminUserDetail() {
             <div className="absolute inset-x-0 -bottom-16 flex justify-center">
               <Avatar className="size-32 border-4 border-white shadow-lg">
                 <AvatarImage
-                  src={user?.profile?.profilePhoto || "/default-avatar.png"}
+                  src={user?.profile?.profilePhoto}
                   alt={user?.fullname}
                 />
               </Avatar>
@@ -87,8 +87,7 @@ export default function AdminUserDetail() {
                     rel="noopener noreferrer"
                     className="text-indigo-600 hover:underline font-medium"
                   >
-                    {user?.profile?.resumeOriginalName ||
-                      "Xem CV"}
+                    {user?.profile?.resumeOriginalName || "Xem CV"}
                   </a>
                 ) : (
                   <p className="text-gray-800">N/A</p>
