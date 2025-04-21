@@ -37,7 +37,7 @@ export default function LatestJobsCard({ job }) {
           className={"text-blue-700 font-bold text-xs md:text-sm"}
           variant="ghost"
         >
-          {job?.position} Vị trí
+          Số lượng: {job?.position}
         </Badge>
         <Badge
           className={"text-[#F83002] font-bold text-xs md:text-sm"}

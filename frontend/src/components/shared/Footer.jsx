@@ -5,14 +5,14 @@ export default function Footer() {
     <footer className="bg-gray-50 border-t border-gray-200 py-8 mt-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          {/* Logo & Info */}
+          {/* logo & thông tin */}
           <div className="text-center md:text-left">
             <h2 className="text-2xl font-bold text-gray-800">JobsAG</h2>
             <p className="text-sm text-gray-500">© 2025 Nguyễn Hoàng Phúc</p>
             <p className="text-sm text-gray-400">Tìm việc nhanh</p>
           </div>
 
-          {/* Navigation */}
+          {/* chuyển trang */}
           <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-600">
             <a href="/" className="hover:text-blue-600 transition">
               Trang chủ
@@ -28,7 +28,7 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Social Icons */}
+          {/* icon */}
           <div className="flex space-x-4">
             <a
               href="https://www.facebook.com/profile.php?id=100029510903633"

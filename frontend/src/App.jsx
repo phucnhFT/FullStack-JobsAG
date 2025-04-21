@@ -23,6 +23,7 @@ import Applicants from "@/components/Employer/Applicants";
 import CaterogyAdmin from "@/components/Admin/CaterogyAdmin";
 import AdminUserDetail from "@/components/Admin/UserDetail";
 import CompanyDetails from "@/components/CompanyDetails";
+import Footer from "@/components/shared/Footer";
 
 const appRouter = createBrowserRouter([
   // Ứng Viên

@@ -33,7 +33,7 @@ export default function Job({ job }) {
             );
           }
         } catch (error) {
-          console.error("Error checking followed company:", error);
+          console.error("kiem tra:", error);
         }
       };
       checkFollowed();
@@ -141,7 +141,7 @@ export default function Job({ job }) {
           className={"text-blue-700 font-bold text-xs md:text-sm"}
           variant="ghost"
         >
-          {job?.position} Vị trí
+          Số lượng: {job?.position}
         </Badge>
         <Badge
           className={"text-[#F83002] font-bold text-xs md:text-sm"}

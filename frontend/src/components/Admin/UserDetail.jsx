@@ -91,7 +91,7 @@ export default function AdminUserDetail() {
                       "Xem CV"}
                   </a>
                 ) : (
-                  <p className="text-gray-800">Đây là nhà tuyển dụng</p>
+                  <p className="text-gray-800">N/A</p>
                 )}
               </div>
             </div>
