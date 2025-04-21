@@ -12,6 +12,7 @@ const jobSlice = createSlice({
       location: "", // Địa điểm lọc
       salary: "", // Mức lương lọc
       searchJobByText: "", // Tìm kiếm theo từ khóa
+      category: "",
     },
     categories: [],
   },

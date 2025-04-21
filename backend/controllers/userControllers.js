@@ -122,7 +122,7 @@ export const login = async (req, res) => {
     const { role } = req.body;
     if (role !== user.role) {
       return res.status(400).json({
-        message: "Vui lòng chọn vai trò đăng nhập",
+        message: "Vai trò account không đúng",
         success: false,
       });
     }

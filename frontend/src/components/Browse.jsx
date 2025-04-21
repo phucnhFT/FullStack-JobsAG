@@ -8,28 +8,38 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import Navbar from "@/components/shared/Navbar";
 
 export default function Browse() {
-  useGetAllJobs();
   const dispatch = useDispatch();
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
 
+  const jobsFromHook = useGetAllJobs(); 
+
   useEffect(() => {
     const fetchJobsByCategory = async () => {
+      if (!searchedQuery?.category) return;
+
       try {
         const response = await axios.get(`${JOB_API}/jobs-by-category`, {
-          params: { category: searchedQuery }, //truyền id danh mục vào tham số truy vấn
+          params: { category: searchedQuery.category },
           withCredentials: true,
         });
+
         if (response.data.success) {
           dispatch(setAllJobs(response.data.jobs));
-          dispatch(setSearchedQuery("")); //cập nhật store trong redux
+          dispatch(setSearchedQuery({ category: "" }));
         }
       } catch (error) {
-        console.error("Lỗi khi tìm kiếm công việc theo danh mục:", error);
+        console.error("Lỗi khi lọc công việc theo danh mục:", error);
       }
     };
 
     fetchJobsByCategory();
-  }, [searchedQuery, dispatch]);
+  }, [searchedQuery.category, dispatch]);
+
+  useEffect(() => {
+    if (!searchedQuery?.category && jobsFromHook?.length) {
+      dispatch(setAllJobs(jobsFromHook));
+    }
+  }, [jobsFromHook, searchedQuery.category, dispatch]);
 
   return (
     <div>

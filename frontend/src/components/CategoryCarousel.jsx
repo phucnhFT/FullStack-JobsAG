@@ -34,7 +34,7 @@ export default function CategoryCarousel() {
   };
 
   const searchJob = (categoryId) => {
-    dispatch(setSearchedQuery(categoryId));
+    dispatch(setSearchedQuery({ category: categoryId })); 
     navigate("/browse");
   };
 
